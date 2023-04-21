@@ -18,9 +18,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	PrimitiveDrawer* primitiveDrawer = nullptr;
 	GameScene* gameScene = nullptr;
 
-	// ゲームウィンドウの作成
-	win = WinApp::GetInstance();
-	win->CreateGameWindow(L"LE2B_05_オイカワ_ユウマ_AL3");
 
 	// DirectX初期化処理
 	dxCommon = DirectXCommon::GetInstance();
