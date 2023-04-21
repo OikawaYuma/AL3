@@ -6,6 +6,7 @@ GameScene::GameScene() {}
 
 GameScene::~GameScene() {
 	delete sprite_;
+	delete model_;
 }
 
 void GameScene::Initialize() {
@@ -16,6 +17,12 @@ void GameScene::Initialize() {
 
 	playerTh_ = TextureManager::Load("BOUFLY1.png");
 	sprite_ = Sprite::Create(playerTh_, {100, 50});
+
+	//3Dモデルの生成
+	model_ = Model::Create();
+
+	// ビュープロジェクションの初期化
+	viewProjection_.Initialize();
 
 }
 
