@@ -44,11 +44,9 @@ private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
-	// テクスチャハンドル
-	uint32_t playerTh_;
 
-	//スプライト
-	Sprite* sprite_ = nullptr;
+
+	
 
 	//3Dモデルデータ
 	Model* model_ = nullptr;
