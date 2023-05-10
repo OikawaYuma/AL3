@@ -5,7 +5,7 @@
 GameScene::GameScene() {}
 
 GameScene::~GameScene() {
-	
+	delete sprite_;
 	delete model_;
 }
 
@@ -15,6 +15,8 @@ void GameScene::Initialize() {
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 
+	playerTh_ = TextureManager::Load("BOUFLY1.png");
+	sprite_ = Sprite::Create(playerTh_, {100, 50});
 
 	//3Dモデルの生成
 	model_ = Model::Create();
@@ -38,7 +40,7 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに背景スプライトの描画処理を追加できる
 	/// </summary>
-	
+	sprite_->Draw();
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
