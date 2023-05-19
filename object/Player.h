@@ -2,6 +2,8 @@
 #include "WorldTransform.h"
 #include "Model.h"
 #include <cassert>
+#include <input.h>
+
 class Player {
 public:
 	/// <summary>
@@ -26,5 +28,9 @@ private:
 	Model* model_ = nullptr;
 	//テクスチャハンドル
 	uint32_t textureHandle_ = 0u;
+
+	//キーボード入力
+	Input* input_ = nullptr;
+
 
 };
