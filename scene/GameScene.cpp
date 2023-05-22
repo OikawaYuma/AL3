@@ -3,6 +3,7 @@
 #include "WorldTransform.h"
 #include <cassert>
 #include"ImGuiManager.h"
+#include"AxisIndicator.h"
 
 GameScene::GameScene() { }
 
@@ -36,38 +37,44 @@ void GameScene::Initialize() {
 	// デバックカメラの生成
 	debugCamera_ = new DebugCamera(1280, 720);
 
+	//軸方向の表示を有効にする
+	AxisIndicator::GetInstance()->SetVisible(true);
+	//軸方向表示が参照するビュープロジェクションを指定する（アドレス渡し）
+	AxisIndicator::GetInstance()->SetTargetViewProjection(&debugCamera_->GetViewProjection());
+
 }
 
 void GameScene::Update() {
 // 自キャラの更新あ
 	player_->Update();
-	if (input_->TriggerKey(DIK_Q) && isDebugCameraActive_ ==false) {
+	
+#ifdef _DEBUG
+	if (input_->TriggerKey(DIK_Q) && isDebugCameraActive_ == false) {
 		isDebugCameraActive_ = true;
 	}
-#ifdef _DEBUG
-	if (input_->TriggerKey(DIK_Q) && isDebugCameraActive_ == true) {
-		isDebugCameraActive_ = false;
-	}
+#endif
 
-#endif // 
 	// カメラの処理
 	if (isDebugCameraActive_) {
-	
-			// デバックカメラの更新
+
+		// デバックカメラの更新
 		debugCamera_->Update();
-	//デバッグカメラの更新
-		viewProjection_.matView = Inverse(viewProjection_.matView);
-		viewProjection_.matProjection = MakePerspectiveFovMatrix(0.45f,float(1280)/float(720),0.1f,100.0f);
+		// デバッグカメラの更新
+		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
+		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
 		// ビュープロジェクション行列の転送
 		viewProjection_.TransferMatrix();
 	} else {
-		//ビュープロジェクション行列の更新と転送
+		// ビュープロジェクション行列の更新と転送
 		viewProjection_.UpdateMatrix();
 	}
 
 	ImGui::Begin("Debug2");
-	ImGui::Text(  "%d",isDebugCameraActive_);
+	ImGui::Text("%d", isDebugCameraActive_);
 	ImGui::End();
+
+ // 
+	
 
 }
 
@@ -100,7 +107,7 @@ void GameScene::Draw() {
 	/// </summary>
 
 	// 自キャラの描画
-	player_->Draw(viewProjection_);
+	player_->Draw(debugCamera_->GetViewProjection());
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
