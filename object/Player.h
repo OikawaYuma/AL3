@@ -11,6 +11,9 @@ public:
 	/// </ summary>
 	void Initialize(Model* model, uint32_t textureHandle);
 
+	Vector3 Rotate(Vector3 rot);
+
+
 	/// <summary>
 	/// 初期化
 	/// </ summary>

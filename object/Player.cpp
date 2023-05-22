@@ -4,6 +4,7 @@
 #include <cassert>
 #include "function.h"
 #include"ImGuiManager.h"
+#include<Input.h>
 void Player::Initialize(Model* model, uint32_t textureHandle) {
 
 	// NULLポインタチェック
@@ -22,6 +23,14 @@ void Player::Initialize(Model* model, uint32_t textureHandle) {
 
 
 }
+
+Vector3 Player::Rotate(Vector3 rot){
+
+	
+	return rot;
+
+};
+
 void Player::Update() {
 	// 行列を定数バッファに転送
 	worldTransform_.TransferMatrix();
@@ -63,6 +72,17 @@ void Player::Update() {
 
 	worldTransform_.translation_.y = max(worldTransform_.translation_.y, -kMoveLimitY);
 	worldTransform_.translation_.y = min(worldTransform_.translation_.y, kMoveLimitY);
+
+	// 回転速さ[ラジアン/frame]
+	const float kRotSpeed = 0.02f;
+
+	// 押した方向で移動ベクトルを変更
+	if (input_->PushKey(DIK_A)) {
+		worldTransform_.rotation_.y -= kRotSpeed;
+	} else if (input_->PushKey(DIK_D)) {
+		worldTransform_.rotation_.y += kRotSpeed;
+	}
+
 
 	worldTransform_.matWorld_ = MakeAffineMatrix(
 	    worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
