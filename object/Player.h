@@ -3,6 +3,7 @@
 #include "Model.h"
 #include <cassert>
 #include <input.h>
+#include"PlayerBullet.h"
 
 class Player {
 public:
@@ -23,6 +24,11 @@ public:
 	/// 初期化
 	/// </ summary>
 	void Draw(ViewProjection);
+	/// <summary>
+	/// 攻撃
+	/// </summary>
+	void Attack();
+
 
 private:
 	// ワールド変換データ
@@ -34,6 +40,9 @@ private:
 
 	//キーボード入力
 	Input* input_ = nullptr;
+	//弾
+
+	PlayerBullet* bullet_ = nullptr;
 
 
 };

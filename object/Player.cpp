@@ -84,8 +84,7 @@ void Player::Update() {
 	}
 
 
-	worldTransform_.matWorld_ = MakeAffineMatrix(
-	    worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
+	worldTransform_.UpdateMatrix();
 
 	ImGui::Begin("Debug1");
 	ImGui::Text(
@@ -93,7 +92,34 @@ void Player::Update() {
 	    worldTransform_.translation_.z);
 	ImGui::End();
 
+	// キャラクター攻撃処理
+	Attack();
+	
+	//// 弾更新
+	//if (bullet_) {
+	//	bullet_->Update();
+	//}
+
 
 }
 void Player::Draw(ViewProjection viewProjection_) { 
-	model_->Draw(worldTransform_, viewProjection_, textureHandle_); }
+	model_->Draw(worldTransform_, viewProjection_, textureHandle_);
+	if (bullet_) {
+	
+	bullet_->Draw(viewProjection_);
+	}
+}
+	
+
+void Player::Attack() { 
+	if (input_->TriggerKey(DIK_SPACE)) {
+
+		// 弾を生成し、初期化
+		PlayerBullet* newBullet = new PlayerBullet();
+		newBullet->Initialize(model_, worldTransform_.translation_);
+
+		// 弾を登録する
+		bullet_ = newBullet;
+
+	}
+}
