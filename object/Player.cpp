@@ -5,6 +5,13 @@
 #include "function.h"
 #include"ImGuiManager.h"
 #include<Input.h>
+
+
+
+Player::~Player() { for (PlayerBullet* bullet : bullets_){
+		delete bullet;
+	}; }
+
 void Player::Initialize(Model* model, uint32_t textureHandle) {
 
 	// NULLポインタチェック
@@ -96,6 +103,9 @@ void Player::Update() {
 	Attack();
 	
 	//// 弾更新
+	for (PlayerBullet* bullet : bullets_) {
+		bullet->Update();
+	}
 	//if (bullet_) {
 	//	bullet_->Update();
 	//}
@@ -104,22 +114,32 @@ void Player::Update() {
 }
 void Player::Draw(ViewProjection viewProjection_) { 
 	model_->Draw(worldTransform_, viewProjection_, textureHandle_);
-	if (bullet_) {
-	
-	bullet_->Draw(viewProjection_);
+
+	for (PlayerBullet* bullet : bullets_) {
+		bullet->Draw(viewProjection_);
 	}
+	/*if (bullet_) {
+	bullet_->Draw(viewProjection_);
+	}*/
 }
 	
 
 void Player::Attack() { 
 	if (input_->TriggerKey(DIK_SPACE)) {
 
+		// 弾があれば破棄する
+	/*if (bullet_) {
+
+		delete bullet_;
+		bullet_ = nullptr;
+	}*/
+
 		// 弾を生成し、初期化
 		PlayerBullet* newBullet = new PlayerBullet();
 		newBullet->Initialize(model_, worldTransform_.translation_);
 
 		// 弾を登録する
-		bullet_ = newBullet;
+		bullets_.push_back(newBullet);
 
 	}
 }

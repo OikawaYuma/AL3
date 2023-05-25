@@ -4,9 +4,15 @@
 #include <cassert>
 #include <input.h>
 #include"PlayerBullet.h"
+#include<list>
 
 class Player {
 public:
+	/// <summary>
+	/// デストラクタ
+	/// </summary>
+	~Player();
+
 	/// <summary>
 	/// 初期化
 	/// </ summary>
@@ -42,7 +48,7 @@ private:
 	Input* input_ = nullptr;
 	//弾
 
-	PlayerBullet* bullet_ = nullptr;
+	std::list<PlayerBullet*> bullets_;
 
 
 };
