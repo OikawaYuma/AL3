@@ -11,7 +11,8 @@ public:
 	void Initialize(Model *model,const Vector3& velocity);
 	void Update();
 	void Draw(ViewProjection viewProjection);
-	void Move();
+	void MoveApproach();
+	void MoveLeave();
 	//getter
 	
 
@@ -37,5 +38,8 @@ private:
 
 	// フェーズ
 	Phase phase_ = Phase::Approach;
+
+	// メンバポインタ関数のテーブル
+	static void (Enemy::*pMoveTable[])();
 
 };

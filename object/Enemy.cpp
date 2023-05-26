@@ -1,4 +1,5 @@
 ﻿#include "Enemy.h"
+#include"ImGuiManager.h"
 
 
 void Enemy::Initialize(Model* model, const Vector3& velocity) {
@@ -16,16 +17,34 @@ void Enemy::Initialize(Model* model, const Vector3& velocity) {
 	worldTransform_.translation_ = {0, 5, 50};
 	//引数で受け取った速度をメンバ変数に代入
 	velocity_ = velocity;
-
+	(this->*pMoveTable[0])();
+	
 
 
 }
 
 void Enemy::Update() {
+	/*
+	switch (phase_) {
+	case Phase::Approach:
+	default:
+		MoveApproach();
+		break;
+	case Phase::Leave:
+		MoveLeave();
+		break;
+	}*/
+	(this->*pMoveTable[static_cast<size_t>(phase_)])();
+		Transform_Move(worldTransform_.translation_, velocity_);
 	
-	Move();
 	
-	
+
+	/// ワールドトランスフォームの更新
+	worldTransform_.UpdateMatrix();
+
+	ImGui::Begin("Debug2");
+	ImGui::Text("Phase::%d",phase_ );
+	ImGui::End();
 
 }
 
@@ -35,24 +54,20 @@ void Enemy::Draw(ViewProjection viewProjection_) {
 
 }
 
-void Enemy::Move() { 
-	switch (phase_) { 
-	case Phase::Approach:
-	default:
-		velocity_.z = -0.2f;
-		if (worldTransform_.translation_.z < 0.0f) {
-			phase_ = Phase::Leave;
-		}
-		
-		break;
-	case Phase::Leave:
-		velocity_.z = 0.2f;
-		break;
+void Enemy::MoveApproach() { 
+	velocity_.z = -0.2f;
+	if (worldTransform_.translation_.z < 0.0f) {
+		phase_ = Phase::Leave;
 	}
-	Transform_Move(worldTransform_.translation_, velocity_);
 	
-	/// ワールドトランスフォームの更新
-	worldTransform_.UpdateMatrix();
-
 
 }
+void Enemy::MoveLeave() { 
+	velocity_.z = 0;
+	velocity_.x = -0.2f;
+	velocity_.y = +0.2f;
+	
+}
+
+// staticで宣言したメンバ関数ポインタテーブルの実態
+void (Enemy::*Enemy::pMoveTable[])() = {&Enemy::MoveApproach, &Enemy::MoveLeave};

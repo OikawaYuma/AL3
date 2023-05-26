@@ -79,9 +79,7 @@ void GameScene::Update() {
 		viewProjection_.UpdateMatrix();
 	}
 
-	ImGui::Begin("Debug2");
-	ImGui::Text("%d", isDebugCameraActive_);
-	ImGui::End();
+	
 
  // 
 	
