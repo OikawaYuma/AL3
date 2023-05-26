@@ -33,6 +33,10 @@ void GameScene::Initialize() {
 	// 自キャラの初期化
 	player_->Initialize(model_,playerTh_);
 
+	//敵キャラの生成
+	enemy_ = new Enemy;
+	//敵キャラの初期化
+	enemy_->Initialize(model_, {0,0,-0.2f});
 
 	// デバックカメラの生成
 	debugCamera_ = new DebugCamera(1280, 720);
@@ -42,11 +46,17 @@ void GameScene::Initialize() {
 	//軸方向表示が参照するビュープロジェクションを指定する（アドレス渡し）
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&debugCamera_->GetViewProjection());
 
+	
+
 }
 
 void GameScene::Update() {
 // 自キャラの更新あ
 	player_->Update();
+
+	//敵キャラの更新
+	enemy_->Update();
+	
 	
 #ifdef _DEBUG
 	if (input_->TriggerKey(DIK_Q) && isDebugCameraActive_ == false) {
@@ -108,6 +118,9 @@ void GameScene::Draw() {
 
 	// 自キャラの描画
 	player_->Draw(debugCamera_->GetViewProjection());
+
+	// 敵キャラの描画
+	enemy_->Draw(debugCamera_->GetViewProjection());
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
