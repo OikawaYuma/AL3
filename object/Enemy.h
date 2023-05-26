@@ -11,10 +11,9 @@ public:
 	void Initialize(Model *model,const Vector3& velocity);
 	void Update();
 	void Draw(ViewProjection viewProjection);
-
+	void Move();
 	//getter
 	
-
 
 private:
 	//ワールド変換データ
@@ -30,5 +29,13 @@ private:
 	// 速度
 	Vector3 velocity_;
 
+	// 行動フェーズ
+	enum class Phase {
+		Approach, // 接近する
+		Leave     // 離脱する
+	};
+
+	// フェーズ
+	Phase phase_ = Phase::Approach;
 
 };

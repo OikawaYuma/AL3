@@ -23,16 +23,36 @@ void Enemy::Initialize(Model* model, const Vector3& velocity) {
 
 void Enemy::Update() {
 	
-	///座標を移動させる
-	Transform_Move(worldTransform_.translation_, velocity_);
+	Move();
 	
-	///ワールドトランスフォームの更新
-	worldTransform_.UpdateMatrix();
+	
 
 }
 
 void Enemy::Draw(ViewProjection viewProjection_) {
 	model_->Draw(worldTransform_, viewProjection_, textureHandle_);
+
+
+}
+
+void Enemy::Move() { 
+	switch (phase_) { 
+	case Phase::Approach:
+	default:
+		velocity_.z = -0.2f;
+		if (worldTransform_.translation_.z < 0.0f) {
+			phase_ = Phase::Leave;
+		}
+		
+		break;
+	case Phase::Leave:
+		velocity_.z = 0.2f;
+		break;
+	}
+	Transform_Move(worldTransform_.translation_, velocity_);
+	
+	/// ワールドトランスフォームの更新
+	worldTransform_.UpdateMatrix();
 
 
 }
