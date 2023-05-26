@@ -3,6 +3,9 @@
 #include<Matrix4x4.h>
 	Vector3 Transform_Move(Vector3 &translate,Vector3 &move);
 
+	// ベクトル変換
+    Vector3 TransformNormal(const Vector3& v, const Matrix4x4& m);
+
 	Matrix4x4 Multiply(const Matrix4x4 m1, const Matrix4x4 m2);
 
 	Matrix4x4 MakeRotateXMatrix( float radian);
