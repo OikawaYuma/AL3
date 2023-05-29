@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <Vector3.h>
 #include<Matrix4x4.h>
-	Vector3 Transform_Move(Vector3 &translate,Vector3 &move);
+	Vector3 Transform_Move(const Vector3 &translate,const Vector3 &move);
 
 	// ベクトル変換
     Vector3 TransformNormal(const Vector3& v, const Matrix4x4& m);

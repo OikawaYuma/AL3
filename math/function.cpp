@@ -5,12 +5,12 @@
 
 
 
-Vector3 Transform_Move(Vector3& translate, Vector3& move){ 
-
-	translate.x += move.x; 
-	translate.y += move.y; 
-	translate.z += move.z; 
-	return translate;
+Vector3 Transform_Move(const Vector3& translate,const Vector3& move){ 
+	Vector3 result;
+	result.x = translate.x + move.x; 
+	result.y = translate.y + move.y; 
+	result.z = translate.z + move.z; 
+	return result;
 
 };
 

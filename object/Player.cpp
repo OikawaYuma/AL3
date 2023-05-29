@@ -72,7 +72,7 @@ void Player::Update() {
 	}
 
 	// 座標移動（ベクトルの加算）
-	Transform_Move(worldTransform_.translation_,move);
+	worldTransform_.translation_= Transform_Move(worldTransform_.translation_,move);
 
 	//キーボード入力による移動処理
 

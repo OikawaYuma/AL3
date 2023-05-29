@@ -5,15 +5,54 @@
 #include"ViewProjection.h"
 #include<cassert>
 #include"function.h"
+
+class Enemy;
+
+class BaseEnemyState
+{
+public:
+	virtual void Update(Enemy* pEnemy) = 0;
+};
+
+class EnemyStateApoorch : public BaseEnemyState
+{
+public:
+	void Update(Enemy* pEnemy);
+};
+
+class EnemyStateLeave : public BaseEnemyState
+{
+public:
+	void Update(Enemy* pEnemy);
+};
+
+
 class Enemy {
 public:
-	~Enemy();
+	/*Enemy();
+	~Enemy();*/
 	void Initialize(Model *model,const Vector3& velocity);
 	void Update();
 	void Draw(ViewProjection viewProjection);
-	void MoveApproach();
-	void MoveLeave();
+	void Move();
+	//void MoveApproach();
+	//void MoveLeave();
 	//getter
+	Vector3 GetVelo()
+	{ 
+		return velocity_;
+	}
+
+	Vector3 GetTranslation() { return worldTransform_.translation_; }
+
+	//setter
+	void SetVelo(Vector3 velocity);
+	
+
+	//state
+	
+	void ChangeState(BaseEnemyState* newState);
+
 	
 
 private:
@@ -31,15 +70,18 @@ private:
 	Vector3 velocity_;
 
 	// 行動フェーズ
-	enum class Phase {
-		Approach, // 接近する
-		Leave     // 離脱する
-	};
+	//enum class Phase {
+	//	Approach, // 接近する
+	//	Leave     // 離脱する
+	//};
 
 	// フェーズ
-	Phase phase_ = Phase::Approach;
+	/*Phase phase_ = Phase::Approach;*/
 
 	// メンバポインタ関数のテーブル
-	static void (Enemy::*pMoveTable[])();
+	/*static void (Enemy::*pMoveTable[])();*/
+
+	//state
+	BaseEnemyState* state;
 
 };
