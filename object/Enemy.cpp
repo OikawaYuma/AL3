@@ -21,8 +21,13 @@ void Enemy::Initialize(Model* model, const Vector3& velocity) {
 }
 
 void Enemy::Update() { state->Update(this); 
+
+worldTransform_.UpdateMatrix();
+
+
+
 ImGui::Begin("Debug2");
-	ImGui::Text("t.z : %d\n5d", worldTransform_.translation_.z,velocity_.z);
+	ImGui::Text("t.z : %f\n%f", worldTransform_.translation_.z,velocity_.z);
 	ImGui::End();}
 
 void Enemy::Draw(ViewProjection viewProjection_) {
@@ -62,7 +67,7 @@ void Enemy::ChangeState(BaseEnemyState* newState) { state = newState; }
 
 void EnemyStateApoorch::Update(Enemy* pEnemy) {
 
-	pEnemy->SetVelo({0, 0, 0.2f});
+	pEnemy->SetVelo({0, 0, -0.2f});
 	pEnemy->Move();
 
 	if (pEnemy->GetTranslation().z <= 0) {
