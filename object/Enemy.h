@@ -5,7 +5,7 @@
 #include"ViewProjection.h"
 #include<cassert>
 #include"function.h"
-
+#include<Input.h>
 #include"EnemyBullet.h"
 
 class Enemy;
@@ -58,7 +58,7 @@ public:
 	void ChangeState(BaseEnemyState* newState);
 
 	// 攻撃
-	void Attack();
+	void Fire();
 
 	
 
@@ -87,11 +87,12 @@ private:
 
 	// メンバポインタ関数のテーブル
 	/*static void (Enemy::*pMoveTable[])();*/
-
+	// キーボード入力
+	Input* input_ = nullptr;
 	//state
 	BaseEnemyState* state;
 
 	// 弾
-	std::list<EnemyBullet*> bullets_;
-
+	//std::list<EnemyBullet*> bullets_;
+	EnemyBullet* bullet_ = nullptr;
 };

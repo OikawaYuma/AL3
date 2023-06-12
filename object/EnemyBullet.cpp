@@ -2,6 +2,8 @@
 #include "function.h"
 #include <cassert>
 
+#include<ImGuiManager.h>
+
 void EnemyBullet::Initialize(Model* model, const Vector3& position, const Vector3& velocity) {
 	// NULLポインタチェック
 	assert(model);
@@ -17,7 +19,6 @@ void EnemyBullet::Initialize(Model* model, const Vector3& position, const Vector
 
 	// 引数で受け取った初期座標をセット
 	worldTransform_.translation_ = position;
-
 	worldTransform_.UpdateMatrix();
 
 	// 引数で受け取った速度をメンバ変数に代入
@@ -25,7 +26,11 @@ void EnemyBullet::Initialize(Model* model, const Vector3& position, const Vector
 }
 void EnemyBullet::Update() {
 
-	Transform_Move(worldTransform_.translation_, velocity_);
+	worldTransform_.translation_ = Transform_Move(worldTransform_.translation_, velocity_);
+	ImGui::Begin("Debug3");
+	ImGui::Text("bullet : %f\n%f", worldTransform_.translation_.z, velocity_.z);
+
+	ImGui::End();
 	// 行列を更新
 	worldTransform_.UpdateMatrix();
 
@@ -33,10 +38,10 @@ void EnemyBullet::Update() {
 	if (--deathTimer_ <= 0) {
 
 		isDead_ = true;
+		
 	}
 }
 
 void EnemyBullet::Draw(ViewProjection viewProjectiom) {
-
 	model_->Draw(worldTransform_, viewProjectiom, textureHandle_);
 };

@@ -1,6 +1,6 @@
 ﻿#include "Enemy.h"
 #include "ImGuiManager.h"
-
+#include<Input.h>
 void Enemy::Initialize(Model* model, const Vector3& velocity) {
 	// NULLポインタチェック
 	assert(model);
@@ -24,24 +24,35 @@ void Enemy::Update() { state->Update(this);
 
 worldTransform_.UpdateMatrix();
 
-Attack();
+Fire();
 
 //// 弾更新
-for (EnemyBullet* bullet : bullets_) {
-	bullet->Update();
-}
-// if (bullet_) {
-//	bullet_->Update();
-// }
+//for (EnemyBullet* bullet : bullets_) {
+//	bullet->Update();
+//}
+ if (bullet_) {
+	if (bullet_->GetIsDead()) {
+		delete bullet_;
+		
+	} else {
+
+		bullet_->Update();
+	}
+	 
+ }
 
 
 
 ImGui::Begin("Debug2");
 	ImGui::Text("t.z : %f\n%f", worldTransform_.translation_.z,velocity_.z);
+ImGui::Text("t.z : %d", bullet_->GetIsDead());
 	ImGui::End();}
 
 void Enemy::Draw(ViewProjection viewProjection_) {
 	model_->Draw(worldTransform_, viewProjection_, textureHandle_);
+	if (bullet_) {
+	bullet_->Draw(viewProjection_);
+	}
 }
 void Enemy::Move() {
 	worldTransform_.translation_ = Transform_Move(worldTransform_.translation_, velocity_);
@@ -102,17 +113,21 @@ void EnemyStateLeave::Update(Enemy* pEnemy) {
 	pEnemy->Move();
 }
 
-void Enemy::Attack() { 
-	const float kBulletSpeed = 1.0f;
-	Vector3 velocity(0, 0, kBulletSpeed);
+void Enemy::Fire() { 
+	if (!bullet_) {
 
-	// 速度ベクトルを自機の向きに合わせて回転させる
-	velocity = TransformNormal(velocity, worldTransform_.matWorld_);
+		const float kBulletSpeed = -3.0f;
+		Vector3 velocity(0, 0, kBulletSpeed);
 
-	// 弾を生成し、初期化
-	EnemyBullet* newBullet = new EnemyBullet();
-	newBullet->Initialize(model_, worldTransform_.translation_, velocity);
+		// 弾を生成し、初期化
+		EnemyBullet* newBullet = new EnemyBullet();
+		newBullet->Initialize(model_, worldTransform_.translation_, velocity);
+		// 速度ベクトルを自機の向きに合わせて回転させる
+		velocity = TransformNormal(velocity, worldTransform_.matWorld_);
 
-	// 弾を登録する
-	bullets_.push_back(newBullet);
+		// 弾を登録する
+		// bullets_.push_back(newBullet);
+		bullet_ = newBullet;
+	}
+	
 }
