@@ -6,6 +6,8 @@
 #include<cassert>
 #include"function.h"
 
+#include"EnemyBullet.h"
+
 class Enemy;
 
 class BaseEnemyState
@@ -47,11 +49,16 @@ public:
 
 	//setter
 	void SetVelo(Vector3 velocity);
+
+
 	
 
 	//state
 	
 	void ChangeState(BaseEnemyState* newState);
+
+	// 攻撃
+	void Attack();
 
 	
 
@@ -83,5 +90,8 @@ private:
 
 	//state
 	BaseEnemyState* state;
+
+	// 弾
+	std::list<EnemyBullet*> bullets_;
 
 };

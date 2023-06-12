@@ -24,6 +24,16 @@ void Enemy::Update() { state->Update(this);
 
 worldTransform_.UpdateMatrix();
 
+Attack();
+
+//// 弾更新
+for (EnemyBullet* bullet : bullets_) {
+	bullet->Update();
+}
+// if (bullet_) {
+//	bullet_->Update();
+// }
+
 
 
 ImGui::Begin("Debug2");
@@ -90,4 +100,19 @@ void EnemyStateApoorch::Update(Enemy* pEnemy) {
 void EnemyStateLeave::Update(Enemy* pEnemy) {
 	pEnemy->SetVelo({-0.2f, 0.2f, -0.2f});
 	pEnemy->Move();
+}
+
+void Enemy::Attack() { 
+	const float kBulletSpeed = 1.0f;
+	Vector3 velocity(0, 0, kBulletSpeed);
+
+	// 速度ベクトルを自機の向きに合わせて回転させる
+	velocity = TransformNormal(velocity, worldTransform_.matWorld_);
+
+	// 弾を生成し、初期化
+	EnemyBullet* newBullet = new EnemyBullet();
+	newBullet->Initialize(model_, worldTransform_.translation_, velocity);
+
+	// 弾を登録する
+	bullets_.push_back(newBullet);
 }
