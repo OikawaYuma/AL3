@@ -115,7 +115,7 @@ void EnemyStateLeave::Update(Enemy* pEnemy) {
 
 void Enemy::Fire() { 
 	if (!bullet_) {
-
+		
 		const float kBulletSpeed = -3.0f;
 		Vector3 velocity(0, 0, kBulletSpeed);
 
