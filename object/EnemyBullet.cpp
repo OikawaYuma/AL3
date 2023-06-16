@@ -28,7 +28,7 @@ void EnemyBullet::Update() {
 
 	worldTransform_.translation_ = Transform_Move(worldTransform_.translation_, velocity_);
 	ImGui::Begin("Debug3");
-	ImGui::Text("bullet : %f\n%f", worldTransform_.translation_.z, velocity_.z);
+	ImGui::Text("bullet : %d\n",deathTimer_);
 
 	ImGui::End();
 	// 行列を更新
@@ -40,6 +40,8 @@ void EnemyBullet::Update() {
 		isDead_ = true;
 		
 	}
+
+
 }
 
 void EnemyBullet::Draw(ViewProjection viewProjectiom) {

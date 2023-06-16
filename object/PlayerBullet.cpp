@@ -27,7 +27,7 @@ void PlayerBullet::Initialize(Model* model, const Vector3& position, const Vecto
 }
 void PlayerBullet::Update() {
 
-	Transform_Move(worldTransform_.translation_,velocity_);
+	worldTransform_.translation_ = Transform_Move(worldTransform_.translation_, velocity_);
 	//行列を更新
 	worldTransform_.UpdateMatrix();
 

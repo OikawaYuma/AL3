@@ -4,7 +4,9 @@
 void Enemy::Initialize(Model* model, const Vector3& velocity) {
 	// NULLポインタチェック
 	assert(model);
-
+	// シングルトンインスタンスを取得する
+	input_ = Input::GetInstance();
+	
 	model_ = model;
 	// テクスチャ読み込み
 	textureHandle_ = TextureManager::Load("BOSS1.png");
@@ -24,39 +26,51 @@ void Enemy::Update() { state->Update(this);
 
 worldTransform_.UpdateMatrix();
 
+// デスフラグの立った弾を削除
+bullets_.remove_if([](EnemyBullet* bullet) {
+	if (bullet->GetIsDead()) {
+		delete bullet;
+		return true;
+	}
+	return false;
+});
+
 Fire();
 
 //// 弾更新
-//for (EnemyBullet* bullet : bullets_) {
-//	bullet->Update();
-//}
- if (bullet_) {
+for (EnemyBullet* bullet : bullets_) {
+	bullet->Update();
+}
+ /*if (bullets_) {
 	if (bullet_->GetIsDead()) {
 		delete bullet_;
+		bullet_ = nullptr;
 		
 	} else {
 
 		bullet_->Update();
 	}
 	 
- }
+ }*/
 
 
-
-ImGui::Begin("Debug2");
-	ImGui::Text("t.z : %f\n%f", worldTransform_.translation_.z,velocity_.z);
-ImGui::Text("t.z : %d", bullet_->GetIsDead());
-	ImGui::End();}
+}
 
 void Enemy::Draw(ViewProjection viewProjection_) {
 	model_->Draw(worldTransform_, viewProjection_, textureHandle_);
-	if (bullet_) {
-	bullet_->Draw(viewProjection_);
+	/*if (bullet) {
+	bullet->Draw(viewProjection_);
+	}*/
+	for (EnemyBullet* bullet : bullets_) {
+	bullet->Draw(viewProjection_);
 	}
 }
 void Enemy::Move() {
 	worldTransform_.translation_ = Transform_Move(worldTransform_.translation_, velocity_);
 }
+
+
+
 //
 // void Enemy::MoveApproach() {
 //	velocity_.z = -0.2f;
@@ -79,6 +93,8 @@ void Enemy::SetVelo(Vector3 velocity) {
 	velocity_.z = velocity.z;
 }
 
+void Enemy::SetShotInterval(int32_t shotIntervalTimer) { shotIntervalTimer_ = shotIntervalTimer; };
+
 // staticで宣言したメンバ関数ポインタテーブルの実態
 // void (Enemy::*Enemy::pMoveTable[])() = {&Enemy::MoveApproach, &Enemy::MoveLeave};
 
@@ -90,9 +106,11 @@ void EnemyStateApoorch::Update(Enemy* pEnemy) {
 
 	pEnemy->SetVelo({0, 0, -0.2f});
 	pEnemy->Move();
+	//pEnemy->SetShotInterval(0);
 
 	if (pEnemy->GetTranslation().z <= 0) {
 		pEnemy->ChangeState(new EnemyStateLeave());
+		pEnemy->SetShotInterval(0);
 	}
 	/*
 	switch (phase_) {
@@ -111,23 +129,36 @@ void EnemyStateApoorch::Update(Enemy* pEnemy) {
 void EnemyStateLeave::Update(Enemy* pEnemy) {
 	pEnemy->SetVelo({-0.2f, 0.2f, -0.2f});
 	pEnemy->Move();
+	
 }
 
+
+
 void Enemy::Fire() { 
-	if (!bullet_) {
+	if (++shotIntervalTimer_ >= kFireInterval) {
 		
+		// 弾があれば破棄する
+		/*if (bullet_) {
+
+		    delete bullet_;
+		    bullet_ = nullptr;
+		}*/
+		// 弾の速度
 		const float kBulletSpeed = -3.0f;
 		Vector3 velocity(0, 0, kBulletSpeed);
+
+		// 速度ベクトルを自機の向きに合わせて回転させる
+		velocity = TransformNormal(velocity, worldTransform_.matWorld_);
 
 		// 弾を生成し、初期化
 		EnemyBullet* newBullet = new EnemyBullet();
 		newBullet->Initialize(model_, worldTransform_.translation_, velocity);
-		// 速度ベクトルを自機の向きに合わせて回転させる
-		velocity = TransformNormal(velocity, worldTransform_.matWorld_);
 
 		// 弾を登録する
-		// bullets_.push_back(newBullet);
-		bullet_ = newBullet;
+		bullets_.push_back(newBullet);
+		shotIntervalTimer_ = 0;
 	}
-	
+	ImGui::Begin("Debug4");
+	ImGui::Text("bullet : %d\n", shotIntervalTimer_);
+	ImGui::End();
 }

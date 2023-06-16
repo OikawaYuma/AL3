@@ -137,11 +137,8 @@ void Player::Draw(ViewProjection viewProjection_) {
 void Player::Attack() { 
 	if (input_->TriggerKey(DIK_SPACE)) {
 
-
-
 		// 弾があれば破棄する
 	/*if (bullet_) {
-
 		delete bullet_;
 		bullet_ = nullptr;
 	}*/
