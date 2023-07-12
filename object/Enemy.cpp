@@ -1,6 +1,7 @@
 ﻿#include "Enemy.h"
 #include "ImGuiManager.h"
 #include<Input.h>
+#include"Player.h"
 void Enemy::Initialize(Model* model, const Vector3& velocity) {
 	// NULLポインタチェック
 	assert(model);
@@ -143,9 +144,26 @@ void Enemy::Fire() {
 		    delete bullet_;
 		    bullet_ = nullptr;
 		}*/
+		assert(player_);
 		// 弾の速度
-		const float kBulletSpeed = -3.0f;
-		Vector3 velocity(0, 0, kBulletSpeed);
+		const float kBulletSpeed = 2.0f;
+		
+		Vector3 start = GetWorldPosition();
+		Vector3 end = player_->GetWorldPosition();
+		
+		Vector3 diffVector;
+		diffVector.x = end.x - start.x;
+		diffVector.y = end.y - start.y;
+		diffVector.z = end.x - start.x;
+		ImGui::Begin("Debug5");
+		ImGui::Text("bullet :%f\n:%f\n:%f\n", diffVector.x, diffVector.y, diffVector.z);
+		ImGui::End();
+		diffVector = Normalize(diffVector);
+		diffVector.x *= kBulletSpeed;
+		diffVector.y *= kBulletSpeed;
+		diffVector.z *= kBulletSpeed;
+
+		Vector3 velocity(diffVector.x, diffVector.y, diffVector.z);
 
 		// 速度ベクトルを自機の向きに合わせて回転させる
 		velocity = TransformNormal(velocity, worldTransform_.matWorld_);
@@ -157,8 +175,23 @@ void Enemy::Fire() {
 		// 弾を登録する
 		bullets_.push_back(newBullet);
 		shotIntervalTimer_ = 0;
+
+		
+
 	}
 	ImGui::Begin("Debug4");
-	ImGui::Text("bullet : %d\n", shotIntervalTimer_);
+	ImGui::Text("bullet :%d\n", shotIntervalTimer_);
+	
 	ImGui::End();
+}
+
+Vector3 Enemy::GetWorldPosition() {
+	// ワールド行列座標を入れる変数
+	Vector3 worldPos;
+	// ワールド行列の平行移動成分を取得（ワールド座標）
+	worldPos.x = worldTransform_.matWorld_.m[3][0];
+	worldPos.y = worldTransform_.matWorld_.m[3][1];
+	worldPos.z = worldTransform_.matWorld_.m[3][2];
+
+	return worldPos;
 }

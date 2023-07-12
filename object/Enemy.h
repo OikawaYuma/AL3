@@ -9,6 +9,7 @@
 #include <cassert>
 
 class Enemy;
+class Player;
 
 class BaseEnemyState {
 public:
@@ -54,8 +55,11 @@ public:
 
 
 	// 弾の発射間隔
-	static const int kFireInterval = 60*3;
+	static const int kFireInterval = 30*1;
+
+	void SetPlayer(Player* player) { player_ = player; }
 	
+	Vector3 GetWorldPosition();
 
 private:
 	// ワールド変換データ
@@ -93,4 +97,8 @@ private:
 
 	// 発射タイマー
 	int32_t shotIntervalTimer_;
+
+
+	// 自キャラ
+	Player* player_ = nullptr;
 };

@@ -305,3 +305,12 @@ Matrix4x4 MakePerspectiveFovMatrix(float fovY, float aspectRatio, float nearClip
 
 	return m4;
 };
+
+// 正規化
+Vector3 Normalize(const Vector3& v) {
+	Vector3 m3;
+	float mag = 1 / sqrtf(v.x * v.x + v.y * v.y + v.z * v.z);
+	m3 = {v.x * mag, v.y * mag, v.z * mag};
+
+	return m3;
+};

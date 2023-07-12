@@ -34,7 +34,11 @@ public:
 	/// 攻撃
 	/// </summary>
 	void Attack();
+	
+	
+	Vector3 GetWorldPosition();
 
+	
 
 private:
 	// ワールド変換データ
@@ -47,7 +51,6 @@ private:
 	//キーボード入力
 	Input* input_ = nullptr;
 	//弾
-
 	std::list<PlayerBullet*> bullets_;
 
 

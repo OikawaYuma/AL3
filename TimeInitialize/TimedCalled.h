@@ -13,9 +13,11 @@ public:
 	// 完了ならtrueを返す
 	bool IsFinished() { return TimeCall = true; };
 
+	bool GetTimeCall() { return TimeCall; };
+
 private:
 	// コールバック
-	std::function<void(int)> hr_ = [](int i) { i-= 1; };
+	std::function<void(int)> hr_;
 	//残り時間
 	uint32_t time_;
 	// 完了フラグ
