@@ -155,16 +155,16 @@ void Enemy::Fire() {
 		diffVector.x = end.x - start.x;
 		diffVector.y = end.y - start.y;
 		diffVector.z = end.x - start.x;
-		ImGui::Begin("Debug5");
-		ImGui::Text("bullet :%f\n:%f\n:%f\n", diffVector.x, diffVector.y, diffVector.z);
-		ImGui::End();
+		
 		diffVector = Normalize(diffVector);
 		diffVector.x *= kBulletSpeed;
 		diffVector.y *= kBulletSpeed;
 		diffVector.z *= kBulletSpeed;
 
 		Vector3 velocity(diffVector.x, diffVector.y, diffVector.z);
-
+		ImGui::Begin("Debug5");
+		ImGui::Text("bullet :%f\n:%f\n:%f\n", diffVector.x, diffVector.y, diffVector.z);
+		ImGui::End();
 		// 速度ベクトルを自機の向きに合わせて回転させる
 		velocity = TransformNormal(velocity, worldTransform_.matWorld_);
 
