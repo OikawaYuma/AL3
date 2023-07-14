@@ -143,7 +143,7 @@ void Player::Attack() {
 		bullet_ = nullptr;
 	}*/
 		//弾の速度
-		const float kBulletSpeed = 1.0f;
+		const float kBulletSpeed = 0.5f;
 		Vector3 velocity(0, 0, kBulletSpeed);
 
 		// 速度ベクトルを自機の向きに合わせて回転させる
@@ -170,3 +170,7 @@ Vector3 Player::GetWorldPosition() {
 	return worldPos;
 
 }
+
+void Player::OnCollision(){
+
+};

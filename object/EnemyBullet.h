@@ -26,6 +26,11 @@ public:
 	// getter
 	bool GetIsDead() const { return isDead_; }
 
+	Vector3 GetWorldPosition();
+	int GetRadius() { return radius_; }
+	// 衝突を検出したらコールバック関数
+	void OnCollision();
+
 private:
 	// ワールド変換データ
 	WorldTransform worldTransform_;
@@ -34,6 +39,8 @@ private:
 
 	// モデル
 	Model* model_ = nullptr;
+
+	int radius_ = 2;
 
 	// テクスチャハンドル
 	uint32_t textureHandle_ = 0u;

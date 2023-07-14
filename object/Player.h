@@ -37,7 +37,12 @@ public:
 	
 	
 	Vector3 GetWorldPosition();
+	int GetRadius() { return radius_; }
+	// 衝突を検出したらコールバック関数
+	void OnCollision();
 
+	// 弾リストを取得
+	const std::list<PlayerBullet*>& Getbullet() const { return bullets_; }
 	
 
 private:
@@ -47,6 +52,8 @@ private:
 	Model* model_ = nullptr;
 	//テクスチャハンドル
 	uint32_t textureHandle_ = 0u;
+
+	int radius_ = 2;
 
 	//キーボード入力
 	Input* input_ = nullptr;

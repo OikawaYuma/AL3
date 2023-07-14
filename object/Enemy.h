@@ -7,6 +7,7 @@
 #include "function.h"
 #include <Input.h>
 #include <cassert>
+#include<list>
 
 class Enemy;
 class Player;
@@ -60,6 +61,12 @@ public:
 	void SetPlayer(Player* player) { player_ = player; }
 	
 	Vector3 GetWorldPosition();
+	int GetRadius() { return radius_; }
+	// 衝突を検出したらコールバック関数
+	void OnCollision();
+
+	// 弾リストを取得
+	const std::list<EnemyBullet*>& Getbullet() const { return bullets_; }
 
 private:
 	// ワールド変換データ
@@ -86,6 +93,8 @@ private:
 
 	// メンバポインタ関数のテーブル
 	/*static void (Enemy::*pMoveTable[])();*/
+
+	int radius_ = 2;
 	// キーボード入力
 	Input* input_ = nullptr;
 	// state

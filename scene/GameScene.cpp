@@ -58,7 +58,7 @@ void GameScene::Update() {
 	
 	//敵キャラの更新
 	enemy_->Update();
-	
+	CheckAllCollision();
 	
 #ifdef _DEBUG
 	if (input_->TriggerKey(DIK_Q) && isDebugCameraActive_ == false) {
@@ -140,4 +140,93 @@ void GameScene::Draw() {
 	Sprite::PostDraw();
 
 #pragma endregion
+}
+
+void GameScene::CheckAllCollision() {
+	// 判定対象AとBの座標
+	Vector3 posA, posB;
+	int radiusA, radiusB;
+	// 自弾リストの取得
+	const std::list<PlayerBullet*>& playerBullets = player_->Getbullet();
+
+	// 敵弾リストの取得
+	const std::list<EnemyBullet*>& enemyBullets = enemy_->Getbullet();
+
+	
+	#pragma region 自キャラと敵弾の当たり判定
+	// 自キャラの座標
+	posA = player_->GetWorldPosition();
+	radiusA = player_->GetRadius();
+	// 自キャラと敵弾全ての当たり判定
+	for (EnemyBullet* bullet : enemyBullets) {
+	// 敵弾の座標
+		posB = bullet->GetWorldPosition();
+		float p2b = (posB.x - posA.x) * (posB.x - posA.x) + (posB.y - posA.y) * (posB.y - posA.y) +
+		            (posB.z - posA.z) * (posB.z - posA.z);
+		radiusB = bullet->GetRadius();
+		int r2r = (radiusA + radiusB) * (radiusA + radiusB);
+
+		if (p2b <= r2r) {
+			// 自キャラの衝突時コールバックを呼び出す
+			player_->OnCollision();
+			// 自キャラの衝突時コールバックを呼び出す
+			bullet->OnCollision();
+		}
+	}
+
+	#pragma endregion
+
+	#pragma region 自弾と敵キャラの当たり判定
+
+	// 自キャラの座標
+	posA = enemy_->GetWorldPosition();
+	radiusA = enemy_->GetRadius();
+	// 自キャラと敵弾全ての当たり判定
+	for (PlayerBullet* bullet : playerBullets) {
+		// 敵弾の座標
+		posB = bullet->GetWorldPosition();
+		float e2b = (posB.x - posA.x) * (posB.x - posA.x) + (posB.y - posA.y) * (posB.y - posA.y) +
+		            (posB.z - posA.z) * (posB.z - posA.z);
+		radiusB = bullet->GetRadius();
+		int r2r = (radiusA + radiusB) * (radiusA + radiusB);
+
+		if (e2b <= r2r) {
+			// 自キャラの衝突時コールバックを呼び出す
+			enemy_->OnCollision();
+			// 自キャラの衝突時コールバックを呼び出す
+			bullet->OnCollision();
+		}
+	}
+
+
+	#pragma endregion
+
+	#pragma region 自弾と敵弾の当たり判定
+
+	// 自キャラと敵弾全ての当たり判定
+	for (PlayerBullet* bulletA : playerBullets) {
+		for (EnemyBullet* bulletB : enemyBullets) {
+			// 自弾の座標
+			posA = bulletA->GetWorldPosition();
+			radiusA = bulletA->GetRadius();
+			// 敵弾の座標
+			posB = bulletB->GetWorldPosition();
+			radiusB = bulletB->GetRadius();
+			float a2b = (posB.x - posA.x) * (posB.x - posA.x) +
+			            (posB.y - posA.y) * (posB.y - posA.y) +
+			            (posB.z - posA.z) * (posB.z - posA.z);
+
+			int r2r = (radiusA + radiusB) * (radiusA + radiusB);
+
+			if (a2b <= r2r) {
+				// 自弾の衝突時コールバックを呼び出す
+				bulletA->OnCollision();
+				// 敵キャラの衝突時コールバックを呼び出す
+				bulletB->OnCollision();
+			}
+		}
+	}
+
+	#pragma endregion
+
 }

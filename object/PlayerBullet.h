@@ -27,11 +27,21 @@ public:
 	// getter
 	bool GetIsDead() const { return isDead_; }
 
+	// 衝突を検出したらコールバック関数
+	void OnCollision();
+
+	// 半径の値を取得
+
+	int GetRadius() { return radius_;  }
+	Vector3 GetWorldPosition();
+
 	private:
 	// ワールド変換データ
 	WorldTransform worldTransform_;
 	// ビュープロジェクション
 	ViewProjection viewProjection_;
+
+	int radius_ = 2;
 
 	//モデル
 	Model* model_ = nullptr;

@@ -146,7 +146,7 @@ void Enemy::Fire() {
 		}*/
 		assert(player_);
 		// 弾の速度
-		const float kBulletSpeed = 2.0f;
+		const float kBulletSpeed = 1.0f;
 		
 		Vector3 start = GetWorldPosition();
 		Vector3 end = player_->GetWorldPosition();
@@ -154,7 +154,7 @@ void Enemy::Fire() {
 		Vector3 diffVector;
 		diffVector.x = end.x - start.x;
 		diffVector.y = end.y - start.y;
-		diffVector.z = end.x - start.x;
+		diffVector.z = end.z - start.z;
 		
 		diffVector = Normalize(diffVector);
 		diffVector.x *= kBulletSpeed;
@@ -195,3 +195,8 @@ Vector3 Enemy::GetWorldPosition() {
 
 	return worldPos;
 }
+
+// 衝突を検出したらコールバック関数
+void Enemy::OnCollision(){
+
+};
