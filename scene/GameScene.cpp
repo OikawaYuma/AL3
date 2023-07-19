@@ -29,8 +29,7 @@ void GameScene::Initialize() {
 	//3Dモデルの生成
 	model_ = Model::Create();
 
-	// ビュープロジェクションの初期化
-	viewProjection_.Initialize();
+	
 	// 自キャラの生成
 	player_ = new Player();
 	// 自キャラの初期化
@@ -52,13 +51,13 @@ void GameScene::Initialize() {
 	// レールカメラの初期化
 	//railCamera_->Initialize();
 
-	// farZの変更
-	viewProjection_.farZ = 2000.0f;
-	viewProjection_.Initialize();
+	
 
 	// 3Dモデルの生成
 	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
-
+	// farZの変更
+	viewProjection_.farZ = 1000.0f;
+	viewProjection_.Initialize();
 	// 天球の初期化
 	skydome_->Initialize(modelSkydome_);
 

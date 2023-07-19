@@ -6,13 +6,16 @@
 void Skydome::Initialize(Model* model) {
 	// NULLポインタチェック
 	assert(model);
-	textureHandle_ = TextureManager::Load("uvChecker.png");
+	//textureHandle_ = TextureManager::Load("uvChecker.png");
 	model_ = model;
 
 	// ワールドトランスフォームの初期化
 	worldTransform_.Initialize();
 	// 引数で受け取った初期座標をセット
 	worldTransform_.translation_ = {0, 0, 0};
+
+	worldTransform_.scale_ = {100, 100, 100};
+	worldTransform_.UpdateMatrix();
 
 }
 
@@ -22,5 +25,5 @@ void Skydome::Update() {
 }
 
 void Skydome::Draw(ViewProjection viewProjection_) {
-	model_->Draw(worldTransform_, viewProjection_, textureHandle_);
+	model_->Draw(worldTransform_, viewProjection_ );
 }
