@@ -14,6 +14,7 @@ GameScene::~GameScene() {
 	delete player_;
 	delete debugCamera_;
 	delete modelSkydome_;
+	delete railCamera_;
 }
 
 void GameScene::Initialize() {
@@ -46,6 +47,12 @@ void GameScene::Initialize() {
 	//天球の生成
 	skydome_ = new Skydome;
 	
+	// レールカメラの生成
+	railCamera_ = new RailCamera;
+	// レールカメラの初期化
+	//railCamera_->Initialize();
+
+	// farZの変更
 	viewProjection_.farZ = 2000.0f;
 	viewProjection_.Initialize();
 
@@ -77,6 +84,7 @@ void GameScene::Update() {
 	enemy_->Update();
 	CheckAllCollision();
 	
+	railCamera_->Update();
 #ifdef _DEBUG
 	if (input_->TriggerKey(DIK_Q) && isDebugCameraActive_ == false) {
 		isDebugCameraActive_ = true;
