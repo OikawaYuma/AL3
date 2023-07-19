@@ -5,6 +5,7 @@
 #include"ImGuiManager.h"
 #include"AxisIndicator.h"
 
+
 GameScene::GameScene() { }
 
 GameScene::~GameScene() {
@@ -12,6 +13,7 @@ GameScene::~GameScene() {
 	delete model_;
 	delete player_;
 	delete debugCamera_;
+	delete modelSkydome_;
 }
 
 void GameScene::Initialize() {
@@ -40,6 +42,20 @@ void GameScene::Initialize() {
 
 	// 敵キャラに自キャラのアドレスを渡す
 	enemy_->SetPlayer(player_);
+
+	//天球の生成
+	skydome_ = new Skydome;
+	
+	viewProjection_.farZ = 2000.0f;
+	viewProjection_.Initialize();
+
+	// 3Dモデルの生成
+	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
+
+	// 天球の初期化
+	skydome_->Initialize(modelSkydome_);
+
+
 	// デバックカメラの生成
 	debugCamera_ = new DebugCamera(1280, 720);
 
@@ -53,7 +69,8 @@ void GameScene::Initialize() {
 }
 
 void GameScene::Update() {
-// 自キャラの更新あ
+	skydome_->Update();
+	    // 自キャラの更新あ
 	player_->Update();
 	
 	//敵キャラの更新
@@ -117,12 +134,14 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
-
+	skydome_->Draw(debugCamera_->GetViewProjection());
 	// 自キャラの描画
 	player_->Draw(debugCamera_->GetViewProjection());
 
 	// 敵キャラの描画
 	enemy_->Draw(debugCamera_->GetViewProjection());
+
+	
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
