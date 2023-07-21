@@ -75,22 +75,22 @@
     <ClCompile Include="2d\ImGuiManager.cpp">
       <Filter>ソース ファイル\2d</Filter>
     </ClCompile>
-    <ClCompile Include="object\Player.cpp">
+    <ClCompile Include="gameObject\Player.cpp">
       <Filter>ソース ファイル\object</Filter>
     </ClCompile>
-    <ClCompile Include="object\Enemy.cpp">
+    <ClCompile Include="gameObject\Enemy.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="math\function.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="object\PlayerBullet.cpp">
+    <ClCompile Include="gameObject\PlayerBullet.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="3d\WorldTransformEx.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="object\EnemyBullet.cpp">
+    <ClCompile Include="gameObject\EnemyBullet.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="TimeInitialize\TimedCalled.cpp">
@@ -99,7 +99,7 @@
     <ClCompile Include="TimeInitialize\TimedCall.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Skydome.cpp">
+    <ClCompile Include="gameObject\Skydome.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="RailCamera.cpp">
@@ -191,19 +191,19 @@
     <ClInclude Include="2d\ImGuiManager.h">
       <Filter>ヘッダー ファイル\2d</Filter>
     </ClInclude>
-    <ClInclude Include="object\Player.h">
+    <ClInclude Include="gameObject\Player.h">
       <Filter>ヘッダー ファイル\object</Filter>
     </ClInclude>
-    <ClInclude Include="object\Enemy.h">
+    <ClInclude Include="gameObject\Enemy.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="math\function.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="object\PlayerBullet.h">
+    <ClInclude Include="gameObject\PlayerBullet.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="object\EnemyBullet.h">
+    <ClInclude Include="gameObject\EnemyBullet.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="TimeInitialize\TimedCalled.h">
@@ -212,7 +212,7 @@
     <ClInclude Include="TimeInitialize\TimedCall.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Skydome.h">
+    <ClInclude Include="gameObject\Skydome.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="RailCamera.h">

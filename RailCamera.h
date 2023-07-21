@@ -2,12 +2,13 @@
 
 #include <ViewProjection.h>
 #include <WorldTransform.h>
+#include <input.h>
 class RailCamera {
 public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize(Vector3 pos, float radian);
+	void Initialize(Vector3 pos, Vector3 rot);
 
 	/// <summary>
 	/// 更新
@@ -19,4 +20,7 @@ private:
 	WorldTransform worldTransform_;
 	// ビュープロジェクション
 	ViewProjection viewProjection_;
+
+	// キーボード入力
+	Input* input_ = nullptr;
 };
