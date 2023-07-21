@@ -49,7 +49,7 @@ void GameScene::Initialize() {
 	// レールカメラの生成
 	railCamera_ = new RailCamera;
 	// レールカメラの初期化
-	railCamera_->Initialize();
+	railCamera_->Initialize(player_->GetWorldPosition();
 
 	
 

@@ -5,7 +5,9 @@
 
 void RailCamera::Initialize(Vector3 pos, Vector3 rot) {	
 	// 引数でワールド座標を受け取ってワールドトランスフォームに設定
-	worldTransform_.translation_ = pos;
+	worldTransform_.translation_.x = pos.x;
+	worldTransform_.translation_.y = pos.y;
+	worldTransform_.translation_.z = pos.z - 15;
 	// 引数で回転角[ラジアンを受け取ってワールドトランスフォームに設定
 	worldTransform_.rotation_ = rot;
 
@@ -20,28 +22,28 @@ void RailCamera::Initialize(Vector3 pos, Vector3 rot) {
 
 void RailCamera::Update(){
 	// 行列を定数バッファに転送
-	//worldTransform_.TransferMatrix();
+	worldTransform_.TransferMatrix();
 
-	//// キャラクターの移動ベクトル
-	//Vector3 move = {0.0f, 0.0f, 0.0f};
+	// キャラクターの移動ベクトル
+	Vector3 move = {0.0f, 0.0f, 0.0f};
 
-	//// キャラクターの移動速さ
-	//const float kCharacterSpeed = 0.2f;
+	// キャラクターの移動速さ
+	const float kCharacterSpeed = 0.2f;
 
-	//// 押した方向で移動ベクトルを変更（左右）
-	//if (input_->PushKey(DIK_LEFT)) {
-	//	move.x -= kCharacterSpeed;
-	//} else if (input_->PushKey(DIK_RIGHT)) {
-	//	move.x += kCharacterSpeed;
-	//}
-	//if (input_->PushKey(DIK_UP)) {
-	//	move.y += kCharacterSpeed;
-	//} else if (input_->PushKey(DIK_DOWN)) {
-	//	move.y -= kCharacterSpeed;
-	//}
+	// 押した方向で移動ベクトルを変更（左右）
+	if (input_->PushKey(DIK_LEFT)) {
+		move.x -= kCharacterSpeed;
+	} else if (input_->PushKey(DIK_RIGHT)) {
+		move.x += kCharacterSpeed;
+	}
+	if (input_->PushKey(DIK_UP)) {
+		move.y += kCharacterSpeed;
+	} else if (input_->PushKey(DIK_DOWN)) {
+		move.y -= kCharacterSpeed;
+	}
 
 	// 座標移動（ベクトルの加算）
-	//worldTransform_.translation_ = Transform_Move(worldTransform_.translation_, move);
+	worldTransform_.translation_ = Transform_Move(worldTransform_.translation_, move);
 
 	// 回転速さ[ラジアン/frame]
 	const float kRotSpeed = 0.02f;
