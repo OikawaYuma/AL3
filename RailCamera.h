@@ -5,6 +5,8 @@
 #include <input.h>
 class RailCamera {
 public:
+	//~RailCamera();
+
 	/// <summary>
 	/// 初期化
 	/// </summary>
