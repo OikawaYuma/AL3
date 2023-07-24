@@ -12,8 +12,9 @@ void RailCamera::Initialize(Vector3 pos, Vector3 rot) {
 	// 引数で回転角[ラジアンを受け取ってワールドトランスフォームに設定
 	worldTransform_.rotation_ = rot;
 	// ビュープロジェクションの初期化
+	viewProjection_.farZ = 10000.0f;
 	viewProjection_.Initialize();
-	move.z = 0.2f;
+	move.z = -0.2f;
 	// シングルトンインスタンスを取得する
 	input_ = Input::GetInstance();
 };

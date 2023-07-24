@@ -36,6 +36,8 @@ void GameScene::Initialize() {
 	player_ = new Player();
 	// 自キャラの初期化
 	player_->Initialize(model_,playerTh_);
+	// 自キャラとレールカメラの親子関係を結ぶ
+	
 
 	//敵キャラの生成
 	enemy_ = new Enemy;
@@ -52,8 +54,8 @@ void GameScene::Initialize() {
 	railCamera_ = new RailCamera;
 	// レールカメラの初期化
 	railCamera_->Initialize({0,0,0}, {0, 0, 0});
-
-	
+	// 自キャラとレールカメラの親子関係を結ぶ
+	player_->SetParent(&railCamera_->GetWorldTransform());	
 
 	// 3Dモデルの生成
 	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
