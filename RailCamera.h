@@ -17,6 +17,8 @@ public:
 	/// </summary>
 	void Update();
 
+	const ViewProjection& GetViewProjection() { return viewProjection_; };
+
 private:
 	// ワールド変換データ
 	WorldTransform worldTransform_;
@@ -25,4 +27,6 @@ private:
 
 	// キーボード入力
 	Input* input_ = nullptr;
+
+	Vector3 move;
 };

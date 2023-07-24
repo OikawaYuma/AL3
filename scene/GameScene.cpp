@@ -18,7 +18,9 @@ GameScene::~GameScene() {
 }
 
 void GameScene::Initialize() {
-
+	// farZの変更
+	viewProjection_.farZ = 1000.0f;
+	viewProjection_.Initialize();
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
@@ -49,15 +51,13 @@ void GameScene::Initialize() {
 	// レールカメラの生成
 	railCamera_ = new RailCamera;
 	// レールカメラの初期化
-	railCamera_->Initialize(player_->GetWorldPosition();
+	railCamera_->Initialize({0,0,0}, {0, 0, 0});
 
 	
 
 	// 3Dモデルの生成
 	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
-	// farZの変更
-	viewProjection_.farZ = 1000.0f;
-	viewProjection_.Initialize();
+	
 	// 天球の初期化
 	skydome_->Initialize(modelSkydome_);
 
@@ -83,12 +83,23 @@ void GameScene::Update() {
 	enemy_->Update();
 	CheckAllCollision();
 	
-	railCamera_->Update();
+	
+	ImGui::Begin("ViewProjection");
+	ImGui::Text("%f", viewProjection_.matView.m[3][2]);
+	ImGui::End();
+
+	
+
 #ifdef _DEBUG
 	if (input_->TriggerKey(DIK_Q) && isDebugCameraActive_ == false) {
 		isDebugCameraActive_ = true;
-	}
+	} 
 #endif
+	railCamera_->Update();
+	viewProjection_.matView = railCamera_->GetViewProjection().matView;
+	viewProjection_.matProjection = railCamera_->GetViewProjection().matProjection;
+	// ビュープロジェクション行列の転送
+	viewProjection_.TransferMatrix();
 
 	// カメラの処理
 	if (isDebugCameraActive_) {
@@ -101,8 +112,10 @@ void GameScene::Update() {
 		// ビュープロジェクション行列の転送
 		viewProjection_.TransferMatrix();
 	} else {
+		
+		
 		// ビュープロジェクション行列の更新と転送
-		viewProjection_.UpdateMatrix();
+		//viewProjection_.UpdateMatrix();
 	}
 
 	ImGui::Begin("Debug2");
@@ -141,12 +154,12 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
-	skydome_->Draw(debugCamera_->GetViewProjection());
+	skydome_->Draw(viewProjection_);
 	// 自キャラの描画
-	player_->Draw(debugCamera_->GetViewProjection());
+	player_->Draw(viewProjection_);
 
 	// 敵キャラの描画
-	enemy_->Draw(debugCamera_->GetViewProjection());
+	enemy_->Draw(viewProjection_);
 
 	
 
