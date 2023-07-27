@@ -65,7 +65,6 @@ Matrix4x4 Multiply(const Matrix4x4 m1, const Matrix4x4 m2) {
 };
 
 
-
 // 1. X軸回転行列
 Matrix4x4 MakeRotateXMatrix(const float radian) {
 	Matrix4x4 m4;

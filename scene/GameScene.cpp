@@ -30,14 +30,23 @@ void GameScene::Initialize() {
 
 	//3Dモデルの生成
 	model_ = Model::Create();
+	// レールカメラの生成
+	railCamera_ = new RailCamera;
+	// レールカメラの初期化
+	railCamera_->Initialize({0, 0, 0}, {0, 0, 0});
 
+	
 	
 	// 自キャラの生成
 	player_ = new Player();
-	// 自キャラの初期化
-	player_->Initialize(model_,playerTh_);
-	// 自キャラとレールカメラの親子関係を結ぶ
 	
+	//pos設定
+	Vector3 playerPos = {0, 0, 10};
+	// 自キャラの初期化
+	player_->Initialize(model_,playerTh_,playerPos);
+
+	// 自キャラとレールカメラの親子関係を結ぶ
+	player_->SetParent(&railCamera_->GetWorldTransform());	
 
 	//敵キャラの生成
 	enemy_ = new Enemy;
@@ -50,12 +59,7 @@ void GameScene::Initialize() {
 	//天球の生成
 	skydome_ = new Skydome;
 	
-	// レールカメラの生成
-	railCamera_ = new RailCamera;
-	// レールカメラの初期化
-	railCamera_->Initialize({0,0,0}, {0, 0, 0});
-	// 自キャラとレールカメラの親子関係を結ぶ
-	player_->SetParent(&railCamera_->GetWorldTransform());	
+	
 
 	// 3Dモデルの生成
 	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
@@ -63,21 +67,22 @@ void GameScene::Initialize() {
 	// 天球の初期化
 	skydome_->Initialize(modelSkydome_);
 
-
 	// デバックカメラの生成
 	debugCamera_ = new DebugCamera(1280, 720);
 
 	//軸方向の表示を有効にする
 	AxisIndicator::GetInstance()->SetVisible(true);
+
 	//軸方向表示が参照するビュープロジェクションを指定する（アドレス渡し）
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&debugCamera_->GetViewProjection());
-
-	
 
 }
 
 void GameScene::Update() {
 	skydome_->Update();
+	//player_->SetParent(&railCamera_->GetWorldTransform());	
+	// 自キャラとレールカメラの親子関係を結ぶ
+	
 	    // 自キャラの更新あ
 	player_->Update();
 	
@@ -98,8 +103,10 @@ void GameScene::Update() {
 	} 
 #endif
 	railCamera_->Update();
+	
 	viewProjection_.matView = railCamera_->GetViewProjection().matView;
 	viewProjection_.matProjection = railCamera_->GetViewProjection().matProjection;
+
 	// ビュープロジェクション行列の転送
 	viewProjection_.TransferMatrix();
 
@@ -119,13 +126,11 @@ void GameScene::Update() {
 		// ビュープロジェクション行列の更新と転送
 		//viewProjection_.UpdateMatrix();
 	}
-
+	/*float a = player_->GetParent()->parent_->matWorld_.m[3][2];
+	float b = player_->GetWorldPosition().z;
 	ImGui::Begin("Debug2");
-	ImGui::Text("%d", enemy_);
-	ImGui::End();
-
- // 
-	
+	ImGui::Text("%f  ,  %f", a,b);
+	ImGui::End();*/
 
 }
 

@@ -12,7 +12,7 @@ Player::~Player() { for (PlayerBullet* bullet : bullets_){
 		delete bullet;
 	}; }
 
-void Player::Initialize(Model* model, uint32_t textureHandle) {
+void Player::Initialize(Model* model, uint32_t textureHandle, Vector3 pos) {
 
 	// NULLポインタチェック
 	assert(model);
@@ -20,15 +20,12 @@ void Player::Initialize(Model* model, uint32_t textureHandle) {
 	model_ = model;
 
 	worldTransform_.Initialize();
-
+	worldTransform_.translation_ = pos;
+	worldTransform_.UpdateMatrix();
 	
 	// シングルトンインスタンスを取得する
 	input_ = Input::GetInstance();
 	
-	
-
-
-
 }
 
 Vector3 Player::Rotate(Vector3 rot){
@@ -102,9 +99,7 @@ void Player::Update() {
 	worldTransform_.UpdateMatrix();
 
 	ImGui::Begin("Debug1");
-	ImGui::Text(
-	    "x:%f y:%f z:%f", worldTransform_.translation_.x, worldTransform_.translation_.y,
-	    worldTransform_.translation_.z);
+	ImGui::Text("%f", worldTransform_.matWorld_.m[3][2]);
 	ImGui::End();
 
 	// キャラクター攻撃処理
@@ -151,7 +146,7 @@ void Player::Attack() {
 
 		// 弾を生成し、初期化
 		PlayerBullet* newBullet = new PlayerBullet();
-		newBullet->Initialize(model_, worldTransform_.translation_,velocity);
+		newBullet->Initialize(model_, GetWorldPosition(), velocity);
 
 		// 弾を登録する
 		bullets_.push_back(newBullet);
@@ -177,5 +172,5 @@ void Player::OnCollision(){
 
 void Player::SetParent(const WorldTransform* parent) {
 	// 親子関係を結ぶ
-	worldTransform_.parent_ = parent->parent_;
+	worldTransform_.parent_ = parent;
 }

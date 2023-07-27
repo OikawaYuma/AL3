@@ -8,7 +8,7 @@ void WorldTransform::UpdateMatrix() {
 	// 親があれば親のワールド行列掛ける
 
 	if (parent_) {
-		matWorld_ = matWorld_ * parent_->matWorld_;
+		matWorld_ = Multiply(matWorld_,parent_->matWorld_);
 	}
 	
 

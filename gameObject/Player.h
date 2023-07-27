@@ -16,7 +16,7 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </ summary>
-	void Initialize(Model* model, uint32_t textureHandle);
+	void Initialize(Model* model, uint32_t textureHandle,Vector3 pos);
 
 	Vector3 Rotate(Vector3 rot);
 
@@ -34,20 +34,31 @@ public:
 	/// </summary>
 	void Attack();
 
+
+	/*----------------------------------
+	        Getter
+	-----------------------------------*/
 	Vector3 GetWorldPosition();
+
 	int GetRadius() { return radius_; }
+
+	const WorldTransform* GetParent() { return worldTransform_.parent_; }
+	/*----------------------------------
+	         Setter
+	----------------------------------*/
+	/// <summary>
+	/// 親となるワールドトランスフォームセット
+	/// </summary>
+	///	<parma name="parent">親となるワールドトランスフォーム<.param>
+	void SetParent(const WorldTransform* parent2);
+
 	// 衝突を検出したらコールバック関数
 	void OnCollision();
 
 	// 弾リストを取得
 	const std::list<PlayerBullet*>& Getbullet() const { return bullets_; }
 
-	/// <summary>
-	/// 親となるワールドトランスフォームセット
-	/// </summary>
-	///	<parma name="parent">親となるワールドトランスフォーム<.param>
-	void SetParent(const WorldTransform* parent);
-
+	
 private:
 	// ワールド変換データ
 	WorldTransform worldTransform_;
