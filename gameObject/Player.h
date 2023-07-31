@@ -5,6 +5,7 @@
 #include <cassert>
 #include <input.h>
 #include <list>
+#include"GameScene.h"
 
 class Player {
 public:
@@ -50,7 +51,7 @@ public:
 	/// 親となるワールドトランスフォームセット
 	/// </summary>
 	///	<parma name="parent">親となるワールドトランスフォーム<.param>
-	void SetParent(const WorldTransform* parent2);
+	void SetParent(const WorldTransform* parent);
 
 	// 衝突を検出したらコールバック関数
 	void OnCollision();

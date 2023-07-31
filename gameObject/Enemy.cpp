@@ -2,46 +2,49 @@
 #include "ImGuiManager.h"
 #include<Input.h>
 #include"Player.h"
-void Enemy::Initialize(Model* model, const Vector3& velocity) {
-	// NULLポインタチェック
-	assert(model);
+void Enemy::Initialize(Vector3 translation) {
 	// シングルトンインスタンスを取得する
 	input_ = Input::GetInstance();
-	
-	model_ = model;
 	// テクスチャ読み込み
 	textureHandle_ = TextureManager::Load("BOSS1.png");
+	// 3Dモデルの生成
+	model_ = Model::Create();
+	
 
 	// ワールドトランスフォームの初期化
 	worldTransform_.Initialize();
 	// 引数で受け取った初期座標をセット
-	worldTransform_.translation_ = {0, 5, 50};
+	worldTransform_.translation_ = translation;
 	// 引数で受け取った速度をメンバ変数に代入
-	velocity_ = velocity;
+	velocity_;
 	/*(this->*pMoveTable[0])();*/
 
 	state = new EnemyStateApoorch();
 }
 
 void Enemy::Update() { state->Update(this); 
+survivalTimer++;
+	shotIntervalTimer_++;
+
+if (deadTime <= survivalTimer) {
+	isAlive = false;
+}
+
 
 worldTransform_.UpdateMatrix();
 
 // デスフラグの立った弾を削除
-bullets_.remove_if([](EnemyBullet* bullet) {
-	if (bullet->GetIsDead()) {
-		delete bullet;
-		return true;
-	}
-	return false;
-});
+//bullets_.remove_if([](EnemyBullet* bullet) {
+//	if (bullet->GetIsDead()) {
+//		delete bullet;
+//		return true;
+//	}
+//	return false;
+//});
 
-Fire();
+//Fire();
 
-//// 弾更新
-for (EnemyBullet* bullet : bullets_) {
-	bullet->Update();
-}
+
  /*if (bullets_) {
 	if (bullet_->GetIsDead()) {
 		delete bullet_;
@@ -62,9 +65,7 @@ void Enemy::Draw(ViewProjection viewProjection_) {
 	/*if (bullet) {
 	bullet->Draw(viewProjection_);
 	}*/
-	for (EnemyBullet* bullet : bullets_) {
-	bullet->Draw(viewProjection_);
-	}
+	
 }
 void Enemy::Move() {
 	worldTransform_.translation_ = Transform_Move(worldTransform_.translation_, velocity_);
@@ -105,7 +106,7 @@ void Enemy::ChangeState(BaseEnemyState* newState) { state = newState; }
 
 void EnemyStateApoorch::Update(Enemy* pEnemy) {
 
-	pEnemy->SetVelo({0, 0, -0.2f});
+	pEnemy->SetVelo({0, 0, -0.4f});
 	pEnemy->Move();
 	//pEnemy->SetShotInterval(0);
 
@@ -128,7 +129,7 @@ void EnemyStateApoorch::Update(Enemy* pEnemy) {
 }
 
 void EnemyStateLeave::Update(Enemy* pEnemy) {
-	pEnemy->SetVelo({-0.2f, 0.2f, -0.2f});
+	pEnemy->SetVelo({-0.2f, 0.2f, -2.2f});
 	pEnemy->Move();
 	
 }
@@ -173,10 +174,8 @@ void Enemy::Fire() {
 		newBullet->Initialize(model_, worldTransform_.translation_, velocity);
 
 		// 弾を登録する
-		bullets_.push_back(newBullet);
+		gameScene_->AddEnemyBullet(newBullet);
 		shotIntervalTimer_ = 0;
-
-		
 
 	}
 	ImGui::Begin("Debug4");
@@ -197,6 +196,4 @@ Vector3 Enemy::GetWorldPosition() {
 }
 
 // 衝突を検出したらコールバック関数
-void Enemy::OnCollision(){
-
-};
+void Enemy::OnCollision() {  isAlive = false; };

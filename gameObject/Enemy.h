@@ -11,6 +11,8 @@
 
 class Enemy;
 class Player;
+class GameScene;
+// GameSceneの前方宣言（苦肉の作）
 
 class BaseEnemyState {
 public:
@@ -32,7 +34,7 @@ class Enemy {
 public:
 	/*Enemy();
 	~Enemy();*/
-	void Initialize(Model* model, const Vector3& velocity);
+	void Initialize(Vector3 translation);
 	void Update();
 	void Draw(ViewProjection viewProjection);
 	void Move();
@@ -42,6 +44,8 @@ public:
 	Vector3 GetVelo() { return velocity_; }
 
 	Vector3 GetTranslation() { return worldTransform_.translation_; }
+
+	bool GetIsAlive() { return isAlive; };
 
 	// setter
 	void SetVelo(Vector3 velocity);
@@ -59,14 +63,15 @@ public:
 	static const int kFireInterval = 30*1;
 
 	void SetPlayer(Player* player) { player_ = player; }
-	
+	WorldTransform GetWorldTransform() { return worldTransform_; }
 	Vector3 GetWorldPosition();
 	int GetRadius() { return radius_; }
 	// 衝突を検出したらコールバック関数
 	void OnCollision();
 
-	// 弾リストを取得
-	const std::list<EnemyBullet*>& Getbullet() const { return bullets_; }
+	
+	void SetGameScene(GameScene* gameScene) { gameScene_ = gameScene; }
+	int32_t GetShotTimer() { return shotIntervalTimer_; };
 
 private:
 	// ワールド変換データ
@@ -93,21 +98,34 @@ private:
 
 	// メンバポインタ関数のテーブル
 	/*static void (Enemy::*pMoveTable[])();*/
-
 	int radius_ = 2;
+
 	// キーボード入力
 	Input* input_ = nullptr;
+
 	// state
 	BaseEnemyState* state;
 
 	// 弾
-	std::list<EnemyBullet*> bullets_;
-	// EnemyBullet* bullet_ = nullptr;
+	//std::list<EnemyBullet*> bullets_;
+	
+	// 生きているか
+	bool isAlive = true;
+
+	// 死ぬまでの時間
+	int survivalTimer = 0;
+
+	// 死ぬ時間
+	const int deadTime = 1000;
+
+
+
 
 	// 発射タイマー
 	int32_t shotIntervalTimer_;
 
-
 	// 自キャラ
 	Player* player_ = nullptr;
+	// ゲームシーン
+	GameScene* gameScene_ = nullptr;
 };

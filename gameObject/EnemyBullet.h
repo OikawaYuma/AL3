@@ -25,7 +25,7 @@ public:
 
 	// getter
 	bool GetIsDead() const { return isDead_; }
-
+	Vector3 GetVelo() { return velocity_; };
 	Vector3 GetWorldPosition();
 	int GetRadius() { return radius_; }
 	// 衝突を検出したらコールバック関数
