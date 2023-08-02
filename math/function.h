@@ -1,6 +1,8 @@
 ﻿#pragma once
 #include <Vector3.h>
 #include<Matrix4x4.h>
+
+	Vector3 Transform(const Vector3& vector, const Matrix4x4& matrix);
 	Vector3 Transform_Move(const Vector3 &translate,const Vector3 &move);
 
 	// ベクトル変換
