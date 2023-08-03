@@ -21,6 +21,7 @@ Vector3 Transform(const Vector3& vector, const Matrix4x4& matrix) {
 	return result;
 };
 
+
 Vector3 Transform_Move(const Vector3& translate,const Vector3& move){ 
 	Vector3 result;
 	result.x = translate.x + move.x; 
@@ -329,3 +330,14 @@ Vector3 Normalize(const Vector3& v) {
 
 	return m3;
 };
+
+Vector3 Add(const Vector3& posa, const Vector3& posb) {
+	Vector3 AddPos;
+
+	AddPos.x = posa.x+
+	posb.x;
+	AddPos.y = posa.y + posb.y;
+	AddPos.z = posa.z + posb.z;
+
+	return AddPos;
+}

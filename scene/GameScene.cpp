@@ -24,7 +24,8 @@ void GameScene::Initialize() {
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
-
+	// レティクルのテクスチャ
+	TextureManager::Load("Reticle.png");
 	playerTh_ = TextureManager::Load("BOUFLY1.png");
 	sprite_ = Sprite::Create(playerTh_, {100, 50});
 
@@ -96,7 +97,7 @@ void GameScene::Update() {
 	//  自キャラとレールカメラの親子関係を結ぶ
 
 	// 自キャラの更新あ
-	player_->Update();
+	player_->Update(viewProjection_);
 
 	// 敵キャラの更新
 	for (Enemy* enemy : enemys_) {
@@ -229,7 +230,7 @@ void GameScene::Draw() {
 #pragma region 前景スプライト描画
 	// 前景スプライト描画前処理
 	Sprite::PreDraw(commandList);
-
+	player_->DrawUI();
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>

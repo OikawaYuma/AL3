@@ -1,16 +1,17 @@
 ﻿#include "Player.h"
+#include "ImGuiManager.h"
 #include "TextureManager.h"
 #include "WorldTransform.h"
-#include <cassert>
 #include "function.h"
-#include"ImGuiManager.h"
-#include<Input.h>
+#include <Input.h>
+#include <cassert>
 
-
-
-Player::~Player() { for (PlayerBullet* bullet : bullets_){
+Player::~Player() {
+	for (PlayerBullet* bullet : bullets_) {
 		delete bullet;
-	}; }
+		delete sprite2DReticle_;
+	};
+}
 
 void Player::Initialize(Model* model, uint32_t textureHandle, Vector3 pos) {
 
@@ -25,22 +26,24 @@ void Player::Initialize(Model* model, uint32_t textureHandle, Vector3 pos) {
 
 	// 3Dレティクルのワールドトラベル初期化
 	worldTransform3DReticle_.Initialize();
-	
+
+	// レティクル用テクスチャ取得
+	uint32_t textureReticle = TextureManager::Load("Reticle.png");
+
+	// スプライト生成
+	sprite2DReticle_ =
+	    Sprite::Create(textureReticle, {500, 500}, {1.0f, 1.0f, 1.0f, 1.0f}, {0.5f, 0.5f});
+
 	// シングルトンインスタンスを取得する
 	input_ = Input::GetInstance();
-	
 }
 
-Vector3 Player::Rotate(Vector3 rot){
+Vector3 Player::Rotate(Vector3 rot) { return rot; };
 
-	
-	return rot;
-
-};
-
-void Player::Update() {
+void Player::Update(ViewProjection viewProjection) {
 	// 行列を定数バッファに転送
 	worldTransform_.TransferMatrix();
+	worldTransform3DReticle_.TransferMatrix();
 
 	// キャラクターの移動ベクトル
 	Vector3 move = {0, 0, 0};
@@ -72,16 +75,15 @@ void Player::Update() {
 	}
 
 	// 座標移動（ベクトルの加算）
-	worldTransform_.translation_= Transform_Move(worldTransform_.translation_,move);
+	worldTransform_.translation_ = Transform_Move(worldTransform_.translation_, move);
 
-	//キーボード入力による移動処理
+	// キーボード入力による移動処理
 
-	//移動限界座標
+	// 移動限界座標
 	const float kMoveLimitX = 50;
 	const float kMoveLimitY = 30;
 
-
-	//範囲を超えない処理
+	// 範囲を超えない処理
 	worldTransform_.translation_.x = max(worldTransform_.translation_.x, -kMoveLimitX);
 	worldTransform_.translation_.x = min(worldTransform_.translation_.x, kMoveLimitX);
 
@@ -98,7 +100,6 @@ void Player::Update() {
 		worldTransform_.rotation_.y += kRotSpeed;
 	}
 
-
 	worldTransform_.UpdateMatrix();
 
 	// 自機のワールド座標から3Dレティクルのワールド座標を計算
@@ -108,22 +109,43 @@ void Player::Update() {
 		// 自機から3Dレティクルへのオフセット(Z+向き)
 		Vector3 offset = {0, 0, 1.0f};
 		// 自機のワールド行列の回転を繁栄
-		offset = Transform(offset,worldTransform_.matWorld_);
+		offset = TransformNormal(offset, worldTransform_.matWorld_);
 		// ベクトルの長さを整える
 		offset = Normalize(offset);
-		offset.x*=kDistancePlayerTo3DReticle;
+		offset.x *= kDistancePlayerTo3DReticle;
 		offset.y *= kDistancePlayerTo3DReticle;
 		offset.z *= kDistancePlayerTo3DReticle;
 		// 3Dレティクルの座標を設定
-		worldTransform3DReticle_.translation_ = offset;
+		worldTransform3DReticle_.translation_ = Add(offset, worldTransform_.translation_);
 
 		worldTransform3DReticle_.UpdateMatrix();
-
-
-
-
-
 	}
+
+	// 3Dレティクルのワールド座標から2レティクルのスクリーン座標を計算
+	{
+		Vector3 positionReticle = GetReticleWorldPosition();
+
+		// ビューポート
+		Matrix4x4 matViewport =
+		    MakeViewportMatrix(0, 0, WinApp::kWindowWidth, WinApp::kWindowHeight, 0, 1);
+
+		// ビュー行列とプロジェクション行列、ビューポート行列を合成する
+		Matrix4x4 matVireProjectionViewport =
+		    Multiply(Multiply(viewProjection.matView, viewProjection.matProjection), matViewport);
+
+		// ワールド→スクリーン座標変換（ここで3Dから2Dになる）
+		positionReticle = Transform(positionReticle, matVireProjectionViewport);
+
+		// スプライトのレティクルに座標設定
+		sprite2DReticle_->SetPosition(Vector2(positionReticle.x, positionReticle.y));
+		// レティクル用テクスチャ取得
+		uint32_t textureReticle = TextureManager::Load("Reticle.png");
+		// スプライト生成
+		sprite2DReticle_ = Sprite::Create(
+		    textureReticle, {positionReticle.x, positionReticle.y}, {1.0f, 1.0f, 1.0f, 1.0f},
+		    {0.5f, 0.5f});
+	}
+
 	ImGui::Begin("Debug1");
 	ImGui::Text("%f", worldTransform_.matWorld_.m[3][2]);
 	ImGui::End();
@@ -131,21 +153,17 @@ void Player::Update() {
 	// キャラクター攻撃処理
 	Attack();
 
-
-	
 	//// 弾更新
 	for (PlayerBullet* bullet : bullets_) {
 		bullet->Update();
 	}
-	//if (bullet_) {
+	// if (bullet_) {
 	//	bullet_->Update();
-	//}
-
-
+	// }
 }
-void Player::Draw(ViewProjection viewProjection_) { 
+void Player::Draw(ViewProjection viewProjection_) {
 	model_->Draw(worldTransform_, viewProjection_, textureHandle_);
-	model_->Draw(worldTransform3DReticle_, viewProjection_,textureHandle_);
+	model_->Draw(worldTransform3DReticle_, viewProjection_, textureHandle_);
 	for (PlayerBullet* bullet : bullets_) {
 		bullet->Draw(viewProjection_);
 	}
@@ -153,17 +171,16 @@ void Player::Draw(ViewProjection viewProjection_) {
 	bullet_->Draw(viewProjection_);
 	}*/
 }
-	
 
-void Player::Attack() { 
+void Player::Attack() {
 	if (input_->TriggerKey(DIK_SPACE)) {
 
 		// 弾があれば破棄する
-	/*if (bullet_) {
-		delete bullet_;
-		bullet_ = nullptr;
-	}*/
-		//弾の速度
+		/*if (bullet_) {
+		    delete bullet_;
+		    bullet_ = nullptr;
+		}*/
+		// 弾の速度
 		const float kBulletSpeed = 0.5f;
 		Vector3 velocity(0, 0, kBulletSpeed);
 
@@ -172,15 +189,13 @@ void Player::Attack() {
 		velocity.y = worldTransform3DReticle_.translation_.y - worldTransform_.translation_.y;
 		velocity.z = worldTransform3DReticle_.translation_.z - worldTransform_.translation_.z;
 
-
 		velocity = Normalize(velocity);
 		velocity.x *= kBulletSpeed;
 		velocity.y *= kBulletSpeed;
 		velocity.z *= kBulletSpeed;
 
-
 		// 速度ベクトルを自機の向きに合わせて回転させる
-		//velocity = TransformNormal(velocity, worldTransform_.matWorld_);
+		velocity = TransformNormal(velocity, worldTransform_.matWorld_);
 
 		// 弾を生成し、初期化
 		PlayerBullet* newBullet = new PlayerBullet();
@@ -188,7 +203,6 @@ void Player::Attack() {
 
 		// 弾を登録する
 		bullets_.push_back(newBullet);
-
 	}
 }
 
@@ -201,7 +215,17 @@ Vector3 Player::GetWorldPosition() {
 	worldPos.z = worldTransform_.matWorld_.m[3][2];
 
 	return worldPos;
+}
 
+Vector3 Player::GetReticleWorldPosition() {
+	// ワールド行列座標を入れる変数
+	Vector3 worldPos;
+	// ワールド行列の平行移動成分を取得（ワールド座標）
+	worldPos.x = worldTransform3DReticle_.matWorld_.m[3][0];
+	worldPos.y = worldTransform3DReticle_.matWorld_.m[3][1];
+	worldPos.z = worldTransform3DReticle_.matWorld_.m[3][2];
+
+	return worldPos;
 }
 
 void Player::OnCollision(){
@@ -211,4 +235,11 @@ void Player::OnCollision(){
 void Player::SetParent(const WorldTransform* parent) {
 	// 親子関係を結ぶ
 	worldTransform_.parent_ = parent;
+	worldTransform3DReticle_.parent_ = parent;
+}
+
+void Player::DrawUI() {
+
+	// スプライト生成
+	sprite2DReticle_->Draw();
 }

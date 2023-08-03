@@ -32,3 +32,5 @@
         MakePerspectiveFovMatrix(float fovY, float aspectRatio, float nearClip, float farClip);
 
 	Vector3 Normalize(const Vector3& v);
+
+	Vector3 Add(const Vector3& posa, const Vector3& posb);

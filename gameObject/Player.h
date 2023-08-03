@@ -24,7 +24,7 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </ summary>
-	void Update();
+	void Update(ViewProjection viewProjection);
 
 	/// <summary>
 	/// 初期化
@@ -40,6 +40,7 @@ public:
 	        Getter
 	-----------------------------------*/
 	Vector3 GetWorldPosition();
+	Vector3 GetReticleWorldPosition();
 
 	int GetRadius() { return radius_; }
 
@@ -58,8 +59,12 @@ public:
 
 	// 弾リストを取得
 	const std::list<PlayerBullet*>& Getbullet() const { return bullets_; }
+	/// <summary>
+	/// UI描画
+	/// </summary>
+	void DrawUI();
 
-	
+
 private:
 	// ワールド変換データ
 	WorldTransform worldTransform_;
@@ -77,5 +82,8 @@ private:
 
 	// 3Dレティクル用ワールドトランスフォーム
 	WorldTransform worldTransform3DReticle_;
+
+	// 2Dレティクル用スプライト
+	Sprite* sprite2DReticle_ = nullptr;
 
 };
