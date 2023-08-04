@@ -161,7 +161,7 @@ void GameScene::Update() {
 
 	// カメラの処理
 	if (isDebugCameraActive_) {
-
+		debugCamera_->SetFarZ(100000.0f);
 		// デバックカメラの更新
 		debugCamera_->Update();
 		// デバッグカメラの更新

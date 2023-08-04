@@ -54,6 +54,10 @@ public:
 	///	<parma name="parent">親となるワールドトランスフォーム<.param>
 	void SetParent(const WorldTransform* parent);
 
+	
+	Vector3 operator=(const Vector3& m) { return m; }
+	Vector2 operator=(const Vector2& m) { return m; }
+
 	// 衝突を検出したらコールバック関数
 	void OnCollision();
 
