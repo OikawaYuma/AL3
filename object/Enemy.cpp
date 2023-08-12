@@ -154,7 +154,7 @@ void Enemy::Fire() {
 		Vector3 diffVector;
 		diffVector.x = end.x - start.x;
 		diffVector.y = end.y - start.y;
-		diffVector.z = end.x - start.x;
+		diffVector.z = end.z - start.z;
 		
 		diffVector = Normalize(diffVector);
 		diffVector.x *= kBulletSpeed;
