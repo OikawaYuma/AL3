@@ -1,5 +1,6 @@
 ﻿#include "Enemy.h"
 #include "ImGuiManager.h"
+#include"EnemyStateApoorch.h"
 
 void Enemy::Initialize(Model* model, const Vector3& velocity) {
 	// NULLポインタチェック
@@ -65,29 +66,5 @@ void Enemy::SetVelo(Vector3 velocity) {
 
 void Enemy::ChangeState(BaseEnemyState* newState) { state = newState; }
 
-void EnemyStateApoorch::Update(Enemy* pEnemy) {
 
-	pEnemy->SetVelo({0, 0, -0.2f});
-	pEnemy->Move();
 
-	if (pEnemy->GetTranslation().z <= 0) {
-		pEnemy->ChangeState(new EnemyStateLeave());
-	}
-	/*
-	switch (phase_) {
-	case Phase::Approach:
-	default:
-	    MoveApproach();
-	    break;
-	case Phase::Leave:
-	    MoveLeave();
-	    break;
-	}*/
-
-	
-}
-
-void EnemyStateLeave::Update(Enemy* pEnemy) {
-	pEnemy->SetVelo({-0.2f, 0.2f, -0.2f});
-	pEnemy->Move();
-}

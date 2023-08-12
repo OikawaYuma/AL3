@@ -107,6 +107,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="2d\ImGuiManager.cpp" />
+    <ClCompile Include="object\EnemyStateLeave.cpp" />
+    <ClCompile Include="object\EnemyStateApoorch.cpp" />
+    <ClCompile Include="object\BaseEnemyState.cpp" />
     <ClCompile Include="base\DirectXCommon.cpp" />
     <ClCompile Include="base\WinApp.cpp" />
     <ClCompile Include="object\Enemy.cpp" />
@@ -136,6 +139,9 @@
     <ClInclude Include="3d\ViewProjection.h" />
     <ClInclude Include="3d\WorldTransform.h" />
     <ClInclude Include="audio\Audio.h" />
+    <ClInclude Include="object\EnemyStateLeave.h" />
+    <ClInclude Include="object\EnemyStateApoorch.h" />
+    <ClInclude Include="object\BaseEnemyState.h" />
     <ClInclude Include="base\DirectXCommon.h" />
     <ClInclude Include="base\SafeDelete.h" />
     <ClInclude Include="base\TextureManager.h" />

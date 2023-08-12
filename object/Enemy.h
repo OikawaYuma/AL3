@@ -5,26 +5,15 @@
 #include"ViewProjection.h"
 #include<cassert>
 #include"function.h"
+#include"BaseEnemyState.h"
 
 class Enemy;
 
-class BaseEnemyState
-{
-public:
-	virtual void Update(Enemy* pEnemy) = 0;
-};
 
-class EnemyStateApoorch : public BaseEnemyState
-{
-public:
-	void Update(Enemy* pEnemy);
-};
 
-class EnemyStateLeave : public BaseEnemyState
-{
-public:
-	void Update(Enemy* pEnemy);
-};
+
+
+
 
 
 class Enemy {
