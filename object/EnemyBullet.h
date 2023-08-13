@@ -3,6 +3,9 @@
 #include"Model.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
+
+#include <cmath>
+#include <iostream>
 class EnemyBullet {
 public:
 	/// <summary>

@@ -2,7 +2,7 @@
 #include "function.h"
 #include <cassert>
 
-#include<ImGuiManager.h>
+#include <ImGuiManager.h>
 
 void EnemyBullet::Initialize(Model* model, const Vector3& position, const Vector3& velocity) {
 	// NULLポインタチェック
@@ -19,10 +19,23 @@ void EnemyBullet::Initialize(Model* model, const Vector3& position, const Vector
 
 	// 引数で受け取った初期座標をセット
 	worldTransform_.translation_ = position;
-	worldTransform_.UpdateMatrix();
 
+	// z方向に伸びた形状
+	worldTransform_.scale_.x = 0.5f;
+	worldTransform_.scale_.y = 0.5f;
+	worldTransform_.scale_.z = 3.0f;
 	// 引数で受け取った速度をメンバ変数に代入
 	velocity_ = velocity;
+	// Y軸周り角度（Θy）
+	worldTransform_.rotation_.y = std::atan2(velocity_.x, velocity_.z);
+	float velocityXZ = sqrt((velocity_.x*velocity_.x)+(velocity_.z*velocity_.z));
+
+	worldTransform_.rotation_.x = std::atan2(-velocity_.y, velocityXZ);
+
+
+	worldTransform_.UpdateMatrix();
+
+	
 }
 void EnemyBullet::Update() {
 

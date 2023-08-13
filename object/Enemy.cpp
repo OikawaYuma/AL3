@@ -146,7 +146,7 @@ void Enemy::Fire() {
 		}*/
 		assert(player_);
 		// 弾の速度
-		const float kBulletSpeed = 2.0f;
+		const float kBulletSpeed = 0.5f;
 		
 		Vector3 start = GetWorldPosition();
 		Vector3 end = player_->GetWorldPosition();
