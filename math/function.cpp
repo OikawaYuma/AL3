@@ -1,20 +1,16 @@
 ﻿#include "function.h"
-#include<cmath>
-#include<cassert>
+#include <cassert>
+#include <cmath>
 
-
-
-
-Vector3 Transform_Move(const Vector3& translate,const Vector3& move){ 
+Vector3 Transform_Move(const Vector3& translate, const Vector3& move) {
 	Vector3 result;
-	result.x = translate.x + move.x; 
-	result.y = translate.y + move.y; 
-	result.z = translate.z + move.z; 
+	result.x = translate.x + move.x;
+	result.y = translate.y + move.y;
+	result.z = translate.z + move.z;
 	return result;
-
 };
 
-Vector3 TransformNormal(const Vector3& v, const Matrix4x4& m){ 
+Vector3 TransformNormal(const Vector3& v, const Matrix4x4& m) {
 	Vector3 result{
 	    v.x * m.m[0][0] + v.y * m.m[1][0] + v.z * m.m[2][0],
 	    v.x * m.m[0][1] + v.y * m.m[1][1] + v.z * m.m[2][1],
@@ -63,8 +59,6 @@ Matrix4x4 Multiply(const Matrix4x4 m1, const Matrix4x4 m2) {
 	             m1.m[3][3] * m2.m[3][3];
 	return m4;
 };
-
-
 
 // 1. X軸回転行列
 Matrix4x4 MakeRotateXMatrix(const float radian) {
@@ -167,7 +161,6 @@ Matrix4x4 MakeOrthographicMatrix(
 
 	return m4;
 };
-
 
 // 4. 逆行列
 Matrix4x4 Inverse(const Matrix4x4& m) {
@@ -314,3 +307,17 @@ Vector3 Normalize(const Vector3& v) {
 
 	return m3;
 };
+
+Vector3 Lerp(const Vector3& v1, const Vector3& v2, float t) {
+	Vector3 p;
+	p.x = v1.x + t * (v2.x - v1.x);
+	p.y = v1.y + t * (v2.y - v1.y);
+	p.z = v1.z + t * (v2.z - v1.z);
+	return p;
+};
+
+//Vector3 Slerp(const Vector3& v1, const Vector3& v2, float t) {
+//	Vector3 p;
+//
+//	return p;
+//};

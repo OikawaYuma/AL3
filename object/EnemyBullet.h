@@ -6,6 +6,7 @@
 
 #include <cmath>
 #include <iostream>
+class Player;
 class EnemyBullet {
 public:
 	/// <summary>
@@ -28,6 +29,7 @@ public:
 
 	// getter
 	bool GetIsDead() const { return isDead_; }
+	void SetPlayer(Player* player) { player_ = player; }
 
 private:
 	// ワールド変換データ
@@ -50,5 +52,8 @@ private:
 	int32_t deathTimer_ = kLifeTime;
 	// デスフラグ
 	bool isDead_ = false;
+
+		// 自キャラ
+	Player* player_ = nullptr;
 
 };
