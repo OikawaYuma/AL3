@@ -7,7 +7,7 @@
 #include<list>
 #include "Collider.h"
 
-class Player : Collider{
+class Player : public Collider {
 public:
 	/// <summary>
 	/// デストラクタ

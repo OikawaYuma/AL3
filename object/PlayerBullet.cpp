@@ -45,7 +45,7 @@ void PlayerBullet::Draw(ViewProjection viewProjectiom) {
 
 };
 
-Vector3 PlayerBullet::GetWorldPosition() {
+Vector3 PlayerBullet::GetWorldPosition() const {
 	// ワールド行列座標を入れる変数
 	Vector3 worldPos;
 	// ワールド行列の平行移動成分を取得（ワールド座標）

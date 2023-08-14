@@ -13,6 +13,7 @@
 
 #include "Player.h"
 #include"Enemy.h"
+#include"Collider.h"
 
 /// <summary>
 /// ゲームシーン

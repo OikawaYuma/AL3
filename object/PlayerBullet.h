@@ -6,7 +6,7 @@
 
 #include "Collider.h"
 
-class PlayerBullet : Collider{
+class PlayerBullet : public Collider {
 public:
 	/// <summary>
 	/// 初期化
@@ -35,9 +35,7 @@ public:
 	// 半径の値を取得
 
 	int GetRadius() { return radius_;  }
-	Vector3 GetWorldPosition() const override{
-	return 
-	};
+	Vector3 GetWorldPosition() const override;
 
 	private:
 	// ワールド変換データ

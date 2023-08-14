@@ -5,7 +5,7 @@
 #include "WorldTransform.h"
 #include "Collider.h"
 
-class EnemyBullet : Collider{
+class EnemyBullet : public Collider {
 public:
 	/// <summary>
 	/// 初期化

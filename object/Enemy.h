@@ -30,7 +30,7 @@ public:
 	void Update(Enemy* pEnemy);
 };
 
-class Enemy : Collider {
+class Enemy : public Collider {
 public:
 	/*Enemy();
 	~Enemy();*/
