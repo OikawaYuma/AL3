@@ -35,7 +35,9 @@ public:
 	// 半径の値を取得
 
 	int GetRadius() { return radius_;  }
-	Vector3 GetWorldPosition() const override;
+	Vector3 GetWorldPosition() const override{
+	return 
+	};
 
 	private:
 	// ワールド変換データ
