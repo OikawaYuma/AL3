@@ -4,7 +4,9 @@
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 
-class PlayerBullet {
+#include "Collider.h"
+
+class PlayerBullet : Collider{
 public:
 	/// <summary>
 	/// 初期化
@@ -28,12 +30,12 @@ public:
 	bool GetIsDead() const { return isDead_; }
 
 	// 衝突を検出したらコールバック関数
-	void OnCollision();
+	void OnCollision()override;
 
 	// 半径の値を取得
 
 	int GetRadius() { return radius_;  }
-	Vector3 GetWorldPosition();
+	Vector3 GetWorldPosition() const override;
 
 	private:
 	// ワールド変換データ

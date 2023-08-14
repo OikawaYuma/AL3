@@ -2,6 +2,7 @@
 #include "ImGuiManager.h"
 #include<Input.h>
 #include"Player.h"
+
 void Enemy::Initialize(Model* model, const Vector3& velocity) {
 	// NULLポインタチェック
 	assert(model);

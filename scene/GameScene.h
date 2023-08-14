@@ -79,8 +79,12 @@ private: // メンバ変数
 	// デバックカメラ
 	DebugCamera* debugCamera_ = nullptr;
 
-
-
+	/// <summary>
+	/// コライダー2つの衝突判定と応答
+	/// </summary>
+	/// <param name="colliderA"></param>
+	/// <param name="colliderB"></param>
+	void CheckCollisionPair(Collider* colliderA, Collider* colliderB);
 	
 
 	/// <summary>

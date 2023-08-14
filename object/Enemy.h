@@ -9,10 +9,12 @@
 #include <cassert>
 #include<list>
 
+#include "Collider.h"
+
 class Enemy;
 class Player;
 
-class BaseEnemyState {
+class BaseEnemyState{
 public:
 	virtual void Update(Enemy* pEnemy) = 0;
 	
@@ -28,7 +30,7 @@ public:
 	void Update(Enemy* pEnemy);
 };
 
-class Enemy {
+class Enemy : Collider {
 public:
 	/*Enemy();
 	~Enemy();*/
@@ -60,10 +62,10 @@ public:
 
 	void SetPlayer(Player* player) { player_ = player; }
 	
-	Vector3 GetWorldPosition();
+	Vector3 GetWorldPosition()const override;
 	int GetRadius() { return radius_; }
 	// 衝突を検出したらコールバック関数
-	void OnCollision();
+	void OnCollision() override;
 
 	// 弾リストを取得
 	const std::list<EnemyBullet*>& Getbullet() const { return bullets_; }

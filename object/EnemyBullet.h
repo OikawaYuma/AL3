@@ -3,7 +3,9 @@
 #include"Model.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
-class EnemyBullet {
+#include "Collider.h"
+
+class EnemyBullet : Collider{
 public:
 	/// <summary>
 	/// 初期化
@@ -26,10 +28,10 @@ public:
 	// getter
 	bool GetIsDead() const { return isDead_; }
 
-	Vector3 GetWorldPosition();
+	Vector3 GetWorldPosition() const override;
 	int GetRadius() { return radius_; }
 	// 衝突を検出したらコールバック関数
-	void OnCollision();
+	void OnCollision() override;
 
 private:
 	// ワールド変換データ
