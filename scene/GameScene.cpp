@@ -150,7 +150,23 @@ void GameScene::CheckAllCollision() {
 	// 敵弾リストの取得
 	const std::list<EnemyBullet*>& enemyBullets = enemy_->Getbullet();
 
+	// コライダー
+	std::list<Collider*> colliders_;
+	// コライダーをリストに登録
+	colliders_.push_back(player_);
+	colliders_.push_back(enemy_);
+
+	for (PlayerBullet* bullet : playerBullets) {
+		colliders_.push_back(bullet);
+	}
+	for (EnemyBullet* bullet: enemyBullets) {
+		colliders_.push_back(bullet);
+	}
 	
+	// リスト内のペアを総当たり
+	std::list<Collider*>::iterator itrA = colliders_.begin();
+
+
 	#pragma region 自キャラと敵弾の当たり判定
 	
 	// 自キャラと敵弾全ての当たり判定
