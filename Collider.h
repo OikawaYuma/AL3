@@ -31,7 +31,7 @@ private:
 	int radius_ = 2;
 
 	// 衝突属性（自分）
-	uint32_t collisionAttribute_ = 0xffffffff;
+	uint32_t collisionAttribute_ = 0xFFFFFFFF;
 	// 衝突マスク（相手）
 	uint32_t CollisionMask_ = 0xffffffff;
 

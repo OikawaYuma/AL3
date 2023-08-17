@@ -3,6 +3,7 @@
 #include <cassert>
 
 #include<ImGuiManager.h>
+#include"CollisionConfig.h"
 
 void EnemyBullet::Initialize(Model* model, const Vector3& position, const Vector3& velocity) {
 	// NULLポインタチェック
@@ -23,6 +24,9 @@ void EnemyBullet::Initialize(Model* model, const Vector3& position, const Vector
 
 	// 引数で受け取った速度をメンバ変数に代入
 	velocity_ = velocity;
+	SetCollisonAttribute(1);
+
+	SetCollisionMask(0);
 }
 void EnemyBullet::Update() {
 

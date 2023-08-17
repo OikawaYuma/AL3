@@ -26,10 +26,10 @@ void Player::Initialize(Model* model, uint32_t textureHandle) {
 	// シングルトンインスタンスを取得する
 	input_ = Input::GetInstance();
 	// 衝突属性を設定
-	SetCollisonAttribute(kCollisionAttributePlayer);
+	SetCollisonAttribute(0);
 
 	// 衝突対象を自分の属性以外に設定
-	SetCollisionMask(~kCollisionAttributePlayer);
+	SetCollisionMask(1);
 	
 
 

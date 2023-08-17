@@ -82,7 +82,10 @@ void GameScene::Update() {
 	}
 
 	ImGui::Begin("Debug2");
-	ImGui::Text("%d", enemy_);
+	ImGui::Text("%d,%d\n%d,%d\n", 
+		player_->GetCollisonAttribute(),player_->GetCollisionMask(), 
+		enemy_->GetCollisonAttribute(),enemy_->GetCollisionMask()
+		);
 	ImGui::End();
 
  // 
@@ -162,7 +165,7 @@ void GameScene::CheckAllCollision() {
 	for (EnemyBullet* bullet: enemyBullets) {
 		colliders_.push_back(bullet);
 	}
-	
+
 
 	 
 	//std::list<Collider*> colliders;
@@ -175,7 +178,6 @@ void GameScene::CheckAllCollision() {
 		itrB++;
 		for (; itrB != colliders_.end(); ++itrB) {
 
-			
 
 			// ペアの当たり判定
 			CheckCollisionPair(*itrA, *itrB);
@@ -238,17 +240,26 @@ void GameScene::CheckCollisionPair(Collider* colliderA, Collider* colliderB){
 	posB = colliderB->GetWorldPosition();
 	radiusB = colliderB->GetRadius();
 	// 弾と弾の考交差判定
-	
+	// 衝突フィルタリング
 	
 		float p2b = (posB.x - posA.x) * (posB.x - posA.x) + (posB.y - posA.y) * (posB.y - posA.y) +
 		            (posB.z - posA.z) * (posB.z - posA.z);
 		int r2r = (radiusA + radiusB) * (radiusA + radiusB);
-
-		if (p2b <= r2r) {
-			// コライダーAの衝突時コールバックを呼び出す
+	  /*  if (((colliderA->GetCollisonAttribute() & colliderB->GetCollisionMask())!=0) ||
+	        ((colliderB->GetCollisonAttribute() & colliderA->GetCollisionMask()))!=0) {
+		return;
+	    };*/
+	   
+	    if (p2b <= r2r) {
+		if (colliderA->GetCollisonAttribute() != colliderB->GetCollisionMask() ||
+		   colliderB->GetCollisonAttribute() != colliderA->GetCollisionMask()) {
+			return;
+		};
+		// コライダーAの衝突時コールバックを呼び出す
 		colliderA->OnCollision();
-			// コライダーBの衝突時コールバックを呼び出す
+		// コライダーBの衝突時コールバックを呼び出す
 		colliderB->OnCollision();
-		}
+	    }
+		
 	
 };
