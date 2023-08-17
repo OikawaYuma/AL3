@@ -3,6 +3,8 @@
 #include<Input.h>
 #include"Player.h"
 
+#include"CollisionConfig.h"
+
 void Enemy::Initialize(Model* model, const Vector3& velocity) {
 	// NULLポインタチェック
 	assert(model);
@@ -22,6 +24,11 @@ void Enemy::Initialize(Model* model, const Vector3& velocity) {
 	/*(this->*pMoveTable[0])();*/
 
 	state = new EnemyStateApoorch();
+
+	SetCollisonAttribute(kCollisionAttributeEnemy);
+
+	SetCollisionMask(~kCollisionAttributeEnemy);
+
 }
 
 void Enemy::Update() { state->Update(this); 
