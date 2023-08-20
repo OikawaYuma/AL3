@@ -1,4 +1,8 @@
 ﻿#include "CollisionManager.h"
+#include "Enemy.h"
+#include "GameScene.h"
+#include "Player.h"
+#include"AxisIndicator.h"
 
 void CollisionManager::CheckAllCollision() {
 
@@ -8,7 +12,6 @@ void CollisionManager::CheckAllCollision() {
 	// 敵弾リストの取得
 	const std::list<EnemyBullet*>& enemyBullets = enemy_->Getbullet();
 
-	// コライダー
 	std::list<Collider*> colliders_;
 	// コライダーをリストに登録
 	colliders_.push_back(player_);
@@ -35,3 +38,39 @@ void CollisionManager::CheckAllCollision() {
 			CheckCollisionPair(*itrA, *itrB);
 		}
 	}
+}
+
+void CollisionManager::CheckCollisionPair(Collider* colliderA, Collider* colliderB) {
+	// 判定対象AとBの座標
+	Vector3 posA, posB;
+	int radiusA, radiusB;
+
+	// colliderAの座標
+	posA = colliderA->GetWorldPosition();
+	radiusA = colliderA->GetRadius();
+
+	// colliderBの座標
+	posB = colliderB->GetWorldPosition();
+	radiusB = colliderB->GetRadius();
+	// 弾と弾の考交差判定
+	// 衝突フィルタリング
+
+	float p2b = (posB.x - posA.x) * (posB.x - posA.x) + (posB.y - posA.y) * (posB.y - posA.y) +
+	            (posB.z - posA.z) * (posB.z - posA.z);
+	int r2r = (radiusA + radiusB) * (radiusA + radiusB);
+	/*  if (((colliderA->GetCollisonAttribute() & colliderB->GetCollisionMask())!=0) ||
+	      ((colliderB->GetCollisonAttribute() & colliderA->GetCollisionMask()))!=0) {
+	  return;
+	  };*/
+
+	if (p2b <= r2r) {
+		if (colliderA->GetCollisonAttribute() != colliderB->GetCollisionMask() ||
+		    colliderB->GetCollisonAttribute() != colliderA->GetCollisionMask()) {
+			return;
+		};
+		// コライダーAの衝突時コールバックを呼び出す
+		colliderA->OnCollision();
+		// コライダーBの衝突時コールバックを呼び出す
+		colliderB->OnCollision();
+	}
+};

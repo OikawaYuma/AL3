@@ -5,12 +5,15 @@
 #include"ImGuiManager.h"
 #include"AxisIndicator.h"
 
+
 GameScene::GameScene() { }
 
 GameScene::~GameScene() {
 	delete sprite_;
 	delete model_;
 	delete player_;
+	delete enemy_;
+
 	delete debugCamera_;
 }
 
@@ -22,7 +25,9 @@ void GameScene::Initialize() {
 
 	playerTh_ = TextureManager::Load("BOUFLY1.png");
 	sprite_ = Sprite::Create(playerTh_, {100, 50});
-
+	collisionManager_ = new CollisionManager;
+	collisionManager_->SetGameScene(this);
+	
 	//3Dモデルの生成
 	model_ = Model::Create();
 
@@ -32,16 +37,22 @@ void GameScene::Initialize() {
 	player_ = new Player();
 	// 自キャラの初期化
 	player_->Initialize(model_,playerTh_);
+	collisionManager_->SetPlayer(player_);
 
 	//敵キャラの生成
 	enemy_ = new Enemy;
 	//敵キャラの初期化
 	enemy_->Initialize(model_, {0,0,-0.2f});
+	
 
 	// 敵キャラに自キャラのアドレスを渡す
 	enemy_->SetPlayer(player_);
+	collisionManager_->SetEnemy(enemy_);
 	// デバックカメラの生成
 	debugCamera_ = new DebugCamera(1280, 720);
+
+
+	
 
 	//軸方向の表示を有効にする
 	AxisIndicator::GetInstance()->SetVisible(true);
@@ -58,7 +69,7 @@ void GameScene::Update() {
 	
 	//敵キャラの更新
 	enemy_->Update();
-	CheckAllCollision();
+	collisionManager_->CheckAllCollision();
 	
 #ifdef _DEBUG
 	if (input_->TriggerKey(DIK_Q) && isDebugCameraActive_ == false) {
@@ -81,12 +92,12 @@ void GameScene::Update() {
 		viewProjection_.UpdateMatrix();
 	}
 
-	ImGui::Begin("Debug2");
+	/*ImGui::Begin("Debug2");
 	ImGui::Text("%d,%d\n%d,%d\n", 
 		player_->GetCollisonAttribute(),player_->GetCollisionMask(), 
 		enemy_->GetCollisonAttribute(),enemy_->GetCollisionMask()
 		);
-	ImGui::End();
+	ImGui::End();*/
 
  // 
 	
@@ -185,42 +196,5 @@ void GameScene::Draw() {
 
 	//#pragma endregion
 
-}
 
-void GameScene::CheckCollisionPair(Collider* colliderA, Collider* colliderB){
-	// 判定対象AとBの座標
-	Vector3 posA, posB;
-	int radiusA, radiusB;
-	
 
-	// colliderAの座標
-	posA = colliderA->GetWorldPosition();
-	radiusA = colliderA->GetRadius();
-
-	// colliderBの座標
-	posB = colliderB->GetWorldPosition();
-	radiusB = colliderB->GetRadius();
-	// 弾と弾の考交差判定
-	// 衝突フィルタリング
-	
-		float p2b = (posB.x - posA.x) * (posB.x - posA.x) + (posB.y - posA.y) * (posB.y - posA.y) +
-		            (posB.z - posA.z) * (posB.z - posA.z);
-		int r2r = (radiusA + radiusB) * (radiusA + radiusB);
-	  /*  if (((colliderA->GetCollisonAttribute() & colliderB->GetCollisionMask())!=0) ||
-	        ((colliderB->GetCollisonAttribute() & colliderA->GetCollisionMask()))!=0) {
-		return;
-	    };*/
-	   
-	    if (p2b <= r2r) {
-		if (colliderA->GetCollisonAttribute() != colliderB->GetCollisionMask() ||
-		   colliderB->GetCollisonAttribute() != colliderA->GetCollisionMask()) {
-			return;
-		};
-		// コライダーAの衝突時コールバックを呼び出す
-		colliderA->OnCollision();
-		// コライダーBの衝突時コールバックを呼び出す
-		colliderB->OnCollision();
-	    }
-		
-	
-};
