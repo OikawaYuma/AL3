@@ -26,7 +26,7 @@ void GameScene::Initialize() {
 	audio_ = Audio::GetInstance();
 	// レティクルのテクスチャ
 	TextureManager::Load("Reticle.png");
-	playerTh_ = TextureManager::Load("BOUFLY1.png");
+	playerTh_ = TextureManager::Load("PLAYER.png");
 	sprite_ = Sprite::Create(playerTh_, {100, 50});
 
 	// 3Dモデルの生成

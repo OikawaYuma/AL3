@@ -6,7 +6,7 @@ void Enemy::Initialize(Vector3 translation) {
 	// シングルトンインスタンスを取得する
 	input_ = Input::GetInstance();
 	// テクスチャ読み込み
-	textureHandle_ = TextureManager::Load("BOSS1.png");
+	textureHandle_ = TextureManager::Load("ENEMY.png");
 	// 3Dモデルの生成
 	model_ = Model::Create();
 	
