@@ -46,7 +46,7 @@ void Player::Update() {
 	Vector3 move = {0, 0, 0};
 
 	// キャラクターの移動速さ
-	const float kCharacterSpeed = 0.2f;
+	const float kCharacterSpeed = 1.0f;
 
 	// デスフラグの立った弾を削除
 	bullets_.remove_if([](PlayerBullet* bullet) {

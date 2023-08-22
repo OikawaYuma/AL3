@@ -5,7 +5,7 @@
 
 	// ベクトル変換
     Vector3 TransformNormal(const Vector3& v, const Matrix4x4& m);
-
+    Vector3 Multiply(float scalar, const Vector3& v);
 	Matrix4x4 Multiply(const Matrix4x4 m1, const Matrix4x4 m2);
 
 	Matrix4x4 MakeRotateXMatrix( float radian);
@@ -34,4 +34,4 @@
 	// 線形補間
     Vector3 Lerp(const Vector3& v1, const Vector3& v2,float t);
 
-	 Vector3 Slerp(const Vector3& v1, const Vector3& v2, float t);
+	 Vector3 SLerp( const Vector3& v1, const Vector3& v2, float t);

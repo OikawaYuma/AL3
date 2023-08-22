@@ -19,6 +19,14 @@ Vector3 TransformNormal(const Vector3& v, const Matrix4x4& m) {
 
 	return result;
 };
+Vector3 Multiply(float scalar, const Vector3& v) {
+	Vector3 m3;
+	m3.x = v.x * scalar;
+	m3.y = v.y * scalar;
+	m3.z = v.z * scalar;
+
+	return m3;
+};
 
 Matrix4x4 Multiply(const Matrix4x4 m1, const Matrix4x4 m2) {
 	Matrix4x4 m4;
@@ -316,8 +324,37 @@ Vector3 Lerp(const Vector3& v1, const Vector3& v2, float t) {
 	return p;
 };
 
-//Vector3 Slerp(const Vector3& v1, const Vector3& v2, float t) {
-//	Vector3 p;
-//
-//	return p;
-//};
+// 内績
+float Dot(const Vector3& v1, const Vector3& v2) {
+	float m3;
+	m3 = v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
+
+	return m3;
+};
+
+
+Vector3 SLerp(const Vector3& v1, const Vector3& v2, float t) {
+	Vector3 p;
+
+	Vector3 s;
+	Vector3 e;
+
+	s =Normalize(v1);
+	e = Normalize(v2);
+	float angle = acos(Dot(s, e));
+	// SinΘ
+	float SinTh = sin(angle);
+
+	// 補間係数
+	float Ps = sin(angle * (1 - t));
+	float Pe = sin(angle * t);
+
+	p.x = (Ps * s.x + Pe * e.x) / SinTh;
+	p.y = (Ps * s.y + Pe * e.y) / SinTh;
+	p.z = (Ps * s.z + Pe * e.z) / SinTh;
+
+	p = Normalize(p);
+	
+
+	return p;
+};

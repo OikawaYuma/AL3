@@ -39,17 +39,19 @@ void EnemyBullet::Initialize(Model* model, const Vector3& position, const Vector
 	
 }
 void EnemyBullet::Update() {
-	
+
 	// 敵弾から自キャラへのベクトル計算
 	Vector3 toPlayer;
 	toPlayer.x = player_->GetWorldPosition().x - worldTransform_.matWorld_.m[3][0];
 	toPlayer.y = player_->GetWorldPosition().y - worldTransform_.matWorld_.m[3][1];
 	toPlayer.z = player_->GetWorldPosition().z - worldTransform_.matWorld_.m[3][2];
-	
+
 	float t = 0.01f;
 
 	// 引数で受け取った速度をメンバ変数に代入
-	velocity_ = Lerp(velocity_,toPlayer,t);
+	velocity_ = SLerp(toPlayer,
+	        {worldTransform_.matWorld_.m[3][0], worldTransform_.matWorld_.m[3][1],
+	        worldTransform_.matWorld_.m[3][2]}, t);
 
 	velocity_.x *= 0.7f;
 	velocity_.y *= 0.7f;
