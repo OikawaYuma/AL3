@@ -7,9 +7,10 @@
 #include <cassert>
 
 Player::~Player() {
+	delete sprite2DReticle_;
 	for (PlayerBullet* bullet : bullets_) {
 		delete bullet;
-		delete sprite2DReticle_;
+		
 	};
 }
 
@@ -282,7 +283,7 @@ void Player::Update(ViewProjection viewProjection) {
 }
 void Player::Draw(ViewProjection viewProjection_) {
 	model_->Draw(worldTransform_, viewProjection_, textureHandle_);
-	model_->Draw(worldTransform3DReticle_, viewProjection_, textureHandle_);
+	//model_->Draw(worldTransform3DReticle_, viewProjection_, textureHandle_);
 	for (PlayerBullet* bullet : bullets_) {
 		bullet->Draw(viewProjection_);
 	}

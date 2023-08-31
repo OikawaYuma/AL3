@@ -54,11 +54,20 @@ void GameScene::Initialize() {
 	// 天球の生成
 	skydome_ = new Skydome;
 
+	// 床の生成
+	floor_ = new Floor;
+
 	// 3Dモデルの生成
 	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
 
+	// 3Dモデルの生成
+	modelFloor_ = Model::CreateFromOBJ("Floor", true);
+
 	// 天球の初期化
 	skydome_->Initialize(modelSkydome_);
+
+	// 床の初期化
+	floor_->Initialize(modelFloor_);
 
 	// デバックカメラの生成
 	debugCamera_ = new DebugCamera(1280, 720);
@@ -93,6 +102,7 @@ void GameScene::Update() {
 	UpdateEnemyPopCommands();
 
 	skydome_->Update();
+	floor_->Update();
 	// player_->SetParent(&railCamera_->GetWorldTransform());
 	//  自キャラとレールカメラの親子関係を結ぶ
 
@@ -133,7 +143,7 @@ void GameScene::Update() {
 			// 弾を生成し、初期化
 			EnemyBullet* newBullet = new EnemyBullet();
 			newBullet->Initialize(model_, enemy->GetWorldTransform().translation_, velocity);
-
+			newBullet->SetPlayer(player_);
 			// 弾を登録する
 			enemyBullets_.push_back(newBullet);
 			enemy->SetShotInterval(0);
@@ -210,6 +220,8 @@ void GameScene::Draw() {
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
 	skydome_->Draw(viewProjection_);
+
+	floor_->Draw(viewProjection_);
 	// 自キャラの描画
 	player_->Draw(viewProjection_);
 

@@ -3,6 +3,10 @@
 #include"Model.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
+
+#include <cmath>
+#include <iostream>
+class Player;
 class EnemyBullet {
 public:
 	/// <summary>
@@ -31,6 +35,8 @@ public:
 	// 衝突を検出したらコールバック関数
 	void OnCollision();
 
+	void SetPlayer(Player* player) { player_ = player; }
+
 private:
 	// ワールド変換データ
 	WorldTransform worldTransform_;
@@ -54,5 +60,8 @@ private:
 	int32_t deathTimer_ = kLifeTime;
 	// デスフラグ
 	bool isDead_ = false;
+
+	// 自キャラ
+	Player* player_ = nullptr;
 
 };

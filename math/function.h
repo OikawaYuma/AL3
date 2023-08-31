@@ -34,3 +34,11 @@
 	Vector3 Normalize(const Vector3& v);
 
 	Vector3 Add(const Vector3& posa, const Vector3& posb);
+
+	// 線形補間
+    Vector3 Lerp(const Vector3& v1, const Vector3& v2, float t);
+
+    Vector3 SLerp(const Vector3& v1, const Vector3& v2, float t);
+
+	// 内績
+    float Dot(const Vector3& v1, const Vector3& v2);

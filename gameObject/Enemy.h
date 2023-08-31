@@ -73,6 +73,7 @@ public:
 	void SetGameScene(GameScene* gameScene) { gameScene_ = gameScene; }
 	int32_t GetShotTimer() { return shotIntervalTimer_; };
 
+
 private:
 	// ワールド変換データ
 	WorldTransform worldTransform_;
@@ -98,7 +99,7 @@ private:
 
 	// メンバポインタ関数のテーブル
 	/*static void (Enemy::*pMoveTable[])();*/
-	int radius_ = 2;
+	int radius_ = 1;
 
 	// キーボード入力
 	Input* input_ = nullptr;

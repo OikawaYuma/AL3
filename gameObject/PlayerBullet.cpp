@@ -8,7 +8,7 @@ void PlayerBullet::Initialize(Model* model, const Vector3& position, const Vecto
 
 	model_ = model;
 	//テクスチャ読み込み
-	textureHandle_ = TextureManager::Load("BOUFLY1.png");
+	textureHandle_ = TextureManager::Load("PLAYER.png");
 
 	// WorldTransformの初期化
 	worldTransform_.Initialize();
@@ -17,7 +17,10 @@ void PlayerBullet::Initialize(Model* model, const Vector3& position, const Vecto
 
 	//引数で受け取った初期座標をセット
 	worldTransform_.translation_ = position;
-
+	// z方向に伸びた形状
+	worldTransform_.scale_.x = 0.5f;
+	worldTransform_.scale_.y = 0.5f;
+	worldTransform_.scale_.z = 0.5f;
 	worldTransform_.UpdateMatrix();
 
 	// 引数で受け取った速度をメンバ変数に代入

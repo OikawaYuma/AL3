@@ -77,7 +77,7 @@ private:
 	// テクスチャハンドル
 	uint32_t textureHandle_ = 0u;
 
-	int radius_ = 2;
+	int radius_ = 1;
 
 	// キーボード入力
 	Input* input_ = nullptr;

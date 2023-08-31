@@ -109,6 +109,7 @@
     <ClCompile Include="2d\ImGuiManager.cpp" />
     <ClCompile Include="base\DirectXCommon.cpp" />
     <ClCompile Include="base\WinApp.cpp" />
+    <ClCompile Include="gameObject\Floor.cpp" />
     <ClCompile Include="gameObject\EnemyBullet.cpp" />
     <ClCompile Include="gameObject\Enemy.cpp" />
     <ClCompile Include="math\function.cpp" />
@@ -145,6 +146,7 @@
     <ClInclude Include="base\SafeDelete.h" />
     <ClInclude Include="base\TextureManager.h" />
     <ClInclude Include="base\WinApp.h" />
+    <ClInclude Include="gameObject\Floor.h" />
     <ClInclude Include="gameObject\EnemyBullet.h" />
     <ClInclude Include="gameObject\Enemy.h" />
     <ClInclude Include="math\function.h" />

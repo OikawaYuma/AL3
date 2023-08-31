@@ -16,6 +16,7 @@
 #include"Enemy.h"
 #include"EnemyBullet.h"
 #include"Skydome.h"
+#include "Floor.h"
 #include"RailCamera.h"
 
 #include<sstream>
@@ -120,11 +121,17 @@ private: // メンバ変数
 	//天球
 	Skydome* skydome_ = nullptr;
 
+	//床
+	Floor* floor_ = nullptr;
+
 	//	レールカメラ
 	RailCamera* railCamera_ = nullptr;
 
 	// 3Dモデル
 	Model* modelSkydome_ = nullptr;
+
+	// 3Dモデル
+	Model* modelFloor_ = nullptr;
 
 	// デバックカメラ有効
 	bool isDebugCameraActive_ = false;

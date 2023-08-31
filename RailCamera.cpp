@@ -14,7 +14,7 @@ void RailCamera::Initialize(Vector3 pos, Vector3 rot) {
 	// ビュープロジェクションの初期化
 	viewProjection_.farZ = 10000.0f;
 	viewProjection_.Initialize();
-	move.z = -0.2f;
+	move.z = 0.0f;
 	// シングルトンインスタンスを取得する
 	input_ = Input::GetInstance();
 };
