@@ -252,7 +252,7 @@ void Player::Update(ViewProjection viewProjection) {
 
 		worldTransform3DReticle_.UpdateMatrix();
 
-		ImGui::Begin("Player");
+		/*ImGui::Begin("Player");
 		ImGui::Text("2DReticle:(%2.2f,%2.2f)", spritePosition.x, spritePosition.y);
 		ImGui::Text("Near:(%2.2f,%2.2f)", posNear.x, posNear.y);
 		ImGui::Text("Far:(%2.2f,%2.2f)", posFar.x, posFar.y);
@@ -263,12 +263,12 @@ void Player::Update(ViewProjection viewProjection) {
 		ImGui::Text(
 		    " player : (% 2.2f,%2.2f,%2.2f)", worldTransform_.translation_.x,
 		    worldTransform_.translation_.y, worldTransform_.translation_.z);
-		ImGui::End();
+		ImGui::End();*/
 	}
 
-	ImGui::Begin("Debug1");
+	/*ImGui::Begin("Debug1");
 	ImGui::Text("%f", worldTransform_.matWorld_.m[3][2]);
-	ImGui::End();
+	ImGui::End();*/
 
 	// キャラクター攻撃処理
 	Attack();

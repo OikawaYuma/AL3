@@ -25,20 +25,20 @@ void RailCamera::Update(){
 
 	
 	// カメラの座標を画面表示する処理
-	ImGui::Begin("Camera");
-	ImGui::SliderFloat("%f", &move.z, 0.0f, 0.2f);
-
-	//ImGui::SliderFloat("%f", &.z, 0.0f, 0.2f);
-	//ImGui::SliderFloat("%f", &move.z, 0.0f, 0.2f);
+	//ImGui::Begin("Camera");
 	//ImGui::SliderFloat("%f", &move.z, 0.0f, 0.2f);
 
+	////ImGui::SliderFloat("%f", &.z, 0.0f, 0.2f);
+	////ImGui::SliderFloat("%f", &move.z, 0.0f, 0.2f);
+	////ImGui::SliderFloat("%f", &move.z, 0.0f, 0.2f);
 
-	ImGui::Text(
-	    " translasion %f  %f  %f", worldTransform_.matWorld_.m[3][0], worldTransform_.matWorld_.m[3][1], worldTransform_.matWorld_.m[3][2]);
-	ImGui::Text(
-	    "rotate %f  %f  %f", worldTransform_.rotation_.x, worldTransform_.rotation_.y,worldTransform_.rotation_.z
-	);
-	ImGui::End();
+
+	//ImGui::Text(
+	//    " translasion %f  %f  %f", worldTransform_.matWorld_.m[3][0], worldTransform_.matWorld_.m[3][1], worldTransform_.matWorld_.m[3][2]);
+	//ImGui::Text(
+	//    "rotate %f  %f  %f", worldTransform_.rotation_.x, worldTransform_.rotation_.y,worldTransform_.rotation_.z
+	//);
+	//ImGui::End();
 
 	// 座標移動（ベクトルの加算）
 	worldTransform_.translation_ = Transform_Move(worldTransform_.translation_, move);

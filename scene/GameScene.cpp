@@ -113,9 +113,9 @@ void GameScene::Update() {
 	for (Enemy* enemy : enemys_) {
 		enemy->Update();
 
-		ImGui::Begin("Debug5");
+		/*ImGui::Begin("Debug5");
 		ImGui::Text("bullet :%d", enemy->GetShotTimer());
-		ImGui::End();
+		ImGui::End();*/
 		// enemy->Fire();
 		if (enemy->GetShotTimer() >= enemy->kFireInterval) {
 			assert(player_);
