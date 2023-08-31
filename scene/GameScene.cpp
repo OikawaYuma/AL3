@@ -102,6 +102,7 @@ void GameScene::Update() {
 	// 敵キャラの更新
 	for (Enemy* enemy : enemys_) {
 		enemy->Update();
+
 		ImGui::Begin("Debug5");
 		ImGui::Text("bullet :%d", enemy->GetShotTimer());
 		ImGui::End();
