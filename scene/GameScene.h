@@ -9,6 +9,8 @@
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 
+
+#include<sstream>
 /// <summary>
 /// ゲームシーン
 /// </summary>
